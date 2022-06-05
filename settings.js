@@ -18,21 +18,23 @@ global.APIKeys = {
 }
 
 // Other
-global.owner = ['6282287486762','6282287486762','6282287486762']
-global.premium = ['6282287486762']
+global.owner = ['6282287486762','6282288783972']
+global.premium = ['6282287486762','6282288783972']
 global.ownernomer = '6282287486762'
-global.ownername = 'Yudha'
-global.botname = 'Dha-Md'
+global.ownername = ['YUDHA PERDANA','DhaBotz']
+global.botname = 'DHABOTZ MULTI DEVICE'
 global.footer = 'YUDHA PERDANA'
 global.ig = 'https://instagram.com/yudha_perdana809'
 global.email = 'dhabotz809@gmail.com'
-global.region = 'Lampung'
+global.region = 'INDONESIA'
 global.sc = 'https://youtube.com/channel/dhabotz'
 global.myweb = 'https://github.com/dhabotz'
-global.packname = 'DHA MULTI DEVICE'
-global.author = 'WhatsApp Bot'
-global.sessionName = 'chika'
-global.lolkey = 'RINTISAJA'
+global.packname = 'DHABOTZ'
+global.author = 'MULTI DEVICE'
+global.sessionName = 'Dhabotz'
+global.lolkey = 'Atakbotz'
+global.leykey = 'IkyOgiwara'
+global.dapkey = 'TEtD80QEUh'
 global.prefa = ['','!','.','🐦','🐤','🗿']
 global.sp = '⭔'
 global.mess = {
@@ -44,7 +46,7 @@ global.mess = {
     private: 'Fitur Digunakan Hanya Untuk Private Chat!',
     bot: 'Fitur Khusus Pengguna Nomor Bot',
     wait: 'Loading...',
-    premium: 'Maaf Sebelumya Kamu Belum Premium, Silahkan Pencet Di Bawah Untuk Beli Premium',
+    premium: 'Maaf Kak Kamu Belum Premium, Silahkan Pencet Di Bawah Untuk Beli Premium',
     endLimit: 'Limit Harian Anda Telah Habis, Limit Akan Direset Setiap Jam 12',
 }
     global.limitawal = {

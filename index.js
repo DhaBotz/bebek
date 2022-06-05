@@ -1,8 +1,3 @@
-/**
-   * Create By Dika Ardnt.
-   * Contact Me on wa.me/6288292024190
-   * Follow https://github.com/DikaArdnt
-*/
 
 require('./settings')
 const { default: DhaConnect, useSingleFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@adiwajshing/baileys")
@@ -136,9 +131,31 @@ async function startDha() {
                 }
 
                 if (anu.action == 'add') {
-                    Dha.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}` })
+                let message = await prepareWAMessageMedia({ image: {url: ppuser }}, { upload: Dha.waUploadToServer })
+                const template = generateWAMessageFromContent(anu.id, proto.Message.fromObject({
+                    templateMessage: {
+                        hydratedTemplate: {
+                            imageMessage: message.imageMessage,
+                            hydratedContentText: ``,
+                            hydratedFooterText: 'MASUK DALAM GRUP',
+                            hydratedButtons: []
+                        }
+                    }
+                }), { userJid: anu.id })
+                Dha.relayMessage(anu.id, template.message, { messageId: template.key.id })
                 } else if (anu.action == 'remove') {
-                    Dha.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Leaving To ${metadata.subject}` })
+                                let message = await prepareWAMessageMedia({ image: {url: ppuser }}, { upload: Dha.waUploadToServer })
+                const template = generateWAMessageFromContent(anu.id, proto.Message.fromObject({
+                    templateMessage: {
+                        hydratedTemplate: {
+                            imageMessage: message.imageMessage,
+                            hydratedContentText: ``,
+                            hydratedFooterText: 'KELUAR DARI GRUP',
+                            hydratedButtons: []
+                        }
+                    }
+                }), { userJid: anu.id })
+                Dha.relayMessage(anu.id, template.message, { messageId: template.key.id })
                 }
             }
         } catch (err) {
@@ -241,6 +258,20 @@ async function startDha() {
      * @param {*} options
      * @returns
      */
+     Dha.send5ButGif = async (jid , text = '' , footer = '', but = [], options = {}) =>{
+    let message = await prepareWAMessageMedia({ video: fs.readFileSync('./image/Dha.mp4'), gifPlayback: true }, { upload: Dha.waUploadToServer })
+     const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+     templateMessage: {
+         hydratedTemplate: {
+           videoMessage: message.videoMessage,
+               "hydratedContentText": text,
+               "hydratedFooterText": footer,
+               "hydratedButtons": but
+            }
+            }
+            }), options)
+            Dha.relayMessage(jid, template.message, { messageId: template.key.id })
+    }
     Dha.send5ButImg = async (jid , text = '' , footer = '', img, but = [], options = {}) =>{
         let message = await prepareWAMessageMedia({ image: img }, { upload: Dha.waUploadToServer })
         var template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
@@ -505,7 +536,7 @@ Dha.send5Vid = async (jid , text = '' , footer = '', vid, but = [], options = {}
         await Dha.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
         return waMessage
     }
-
+    
     Dha.cMod = (jid, copy, text = '', sender = Dha.user.id, options = {}) => {
         //let copy = message.toJSON()
 		let mtype = Object.keys(copy.message)[0]

@@ -1,14 +1,10 @@
-/**
-   * Create By Dika Ardnt.
-   * Contact Me on wa.me/6288292024190
-   * Follow https://github.com/DikaArdnt
-*/
-
 require('./settings')
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@adiwajshing/baileys')
 const fs = require('fs')
 const util = require('util')
 const chalk = require('chalk')
+const ya = '```'
+const ye = '*'
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
 const path = require('path')
@@ -22,6 +18,13 @@ const primbon = new Primbon()
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom } = require('./lib/myfunc')
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const autosticker = JSON.parse(fs.readFileSync('./database/autosticker.json'))
+const _sewa = require('./lib/sewa')
+const { porno, } = require('./lib/ApiOrScrap')
+const sewa = JSON.parse(fs.readFileSync('./database/sewa.json'))
+		const wib = moment.tz('Asia/Jakarta').format('HH : mm : ss')
+        const wita = moment.tz('Asia/Makassar').format('HH : mm : ss')
+        const wit = moment.tz('Asia/Jayapura').format('HH : mm : ss')   
+        
 //function rpg
    const { 
      addInventoriDarah, 
@@ -100,13 +103,13 @@ const autosticker = JSON.parse(fs.readFileSync('./database/autosticker.json'))
    const isLimit = getLimit(m.sender)
    const isBesi = getBesi(m.sender)
    const isEmas = getEmas(m.sender)
-   const isEmerald = getEmerald(m.sender)
+   const isEmerald = getEmerald(m.sender)   
    const isInventory = cekInventoryAdaAtauGak(m.sender)
    const isInventoriBuruan = cekDuluHasilBuruanNya(m.sender)
    const isInventoryLimit = cekDuluJoinAdaApaKagaLimitnyaDiJson(m.sender)
    const isInventoryMonay = cekDuluJoinAdaApaKagaMonaynyaDiJson(m.sender)
    const ikan = ['🐟','🐠','🐡']   
-
+   
 // Database Rpg
  let _limit = JSON.parse(fs.readFileSync('./storage/user/limit.json'));
  let _buruan = JSON.parse(fs.readFileSync('./storage/user/hasil_buruan.json'));
@@ -148,6 +151,7 @@ module.exports = Dha = async (Dha, m, chatUpdate, store) => {
 	    const from = mek.key.remoteJid
 
         // Group
+        const isPrem = prem.includes(m.sender)
         const groupMetadata = m.isGroup ? await Dha.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
         const participants = m.isGroup ? await groupMetadata.participants : ''
@@ -195,7 +199,8 @@ module.exports = Dha = async (Dha, m, chatUpdate, store) => {
         } catch (err) {
             console.error(err)
         }
-	    
+	   
+	     
         // Public & Self
         if (!Dha.public) {
             if (!m.key.fromMe) return
@@ -529,12 +534,13 @@ Selama ${clockString(new Date - user.afkTime)}
         
 async function replyTemplate(teks) {
                        const buttonsDefault = [
-	             		{ urlButton: { displayText: `WA OWNER`, url : `${wame}` } },
-	             		{ quickReplyButton: { displayText: `RULES`, id : 'rules'}}
+	             		{ urlButton: { displayText: `WA OWNER`, url : `https://wa.me/6282287486762` } },
+	             		{ quickReplyButton: { displayText: `SILAHKAN BERINILAI`, id : 'wts'}},
+	             		{ quickReplyButton: { displayText: `BACK`, id : 'storemenu'}}
                                         	  ]                 
                        const buttonMessage = { 
                                     text: teks, 
-                                    footer: "Bot By Yudha Perdana", 
+                                    footer: "By Yudha Perdana", 
                                     templateButtons: buttonsDefault, 
                                     image: {url: thumb}                                   
                                                }
@@ -543,11 +549,11 @@ async function replyTemplate(teks) {
 
 async function replyOwnerr(teks) {
                        const buttonsDefault = [
-	             		{ urlButton: { displayText: `YouTube`, url : `${yt}` } }
+	             		{ quickReplyButton: { displayText: `MENU`, id : 'command'}}
                                         	  ]                 
                        const buttonMessage = { 
                                     text: teks, 
-                                    footer: "Bot By Yudha Perdana", 
+                                    footer: "By Yudha Perdana", 
                                     templateButtons: buttonsDefault, 
                                     image: {url: thumb}                                   
                                                }
@@ -556,11 +562,11 @@ async function replyOwnerr(teks) {
 
 async function replyNya(teks) {
                        const buttonsDefault = [
-	             		{ urlButton: { displayText: `MyOwner`, url : `wa.me/6282287486762` } }
+	             		{ urlButton: { displayText: `MyOwner`, url : `https://wa.me/6282287486762` } }
                                         	  ]                 
                        const buttonMessage = { 
                                     text: teks, 
-                                    footer: "Bot By Yudha Perdana", 
+                                    footer: "© YUDHA PERDANA", 
                                     templateButtons: buttonsDefault, 
                                     image: {url: thumb}                                   
                                                }
@@ -569,7 +575,7 @@ async function replyNya(teks) {
 
 async function replyPremium(teks) {
                        const buttonsDefault = [
-	             		{ urlButton: { displayText: `MyOwner`, url : `wa.me/6282287486762` } },
+	             		{ urlButton: { displayText: `MyOwner`, url : `https://wa.me/6282287486762` } },
 	             		{ quickReplyButton: { displayText : `Buy Premium`, id : `buypremium` } }
                                         	  ]                 
                        const buttonMessage = { 
@@ -580,6 +586,10 @@ async function replyPremium(teks) {
                                                }
                        return Dha.sendMessage(from, buttonMessage)
                 }	    	    
+
+ //NGETIK DULU
+	Dha.sendPresenceUpdate('composing', m.chat)
+	
 if (m.isGroup && isAutoSticker) {
 if (/image/.test(mime)) {
 let media = await quoted.download()
@@ -594,6 +604,14 @@ await fs.unlinkSync(encmedia)
 }                
                 
         switch(command) {
+case 'Assalamualaikum': case 'assalamualaikum':{
+replyNya(`Waalaikumsalam Kak *${pushname}*`)
+}
+break
+case 'p': case 'P':{
+replyNya(`Budayakan Ucap Salam Kak ${pushname} Jangan Pa Pe Pa Pe`)
+}        
+break
         case 'inventori': case 'profile':{
 if (q.includes('--help')) return replyNya(examkosong) 
   if (!isDarah){ addInventoriDarah(m.sender, DarahAwal) }
@@ -982,6 +1000,7 @@ Ketik *nyerah* untuk menyerah dan mengakui kekalahan`
             }
             break
             case 'suitpvp': case 'suit': {
+            
             this.suit = this.suit ? this.suit : {}
             let poin = 10
             let poin_lose = 10
@@ -1260,12 +1279,11 @@ case 'cekmati':
               predea = await axios.get(`https://api.agify.io/?name=${q}`)
               replyNya(`Nama : ${predea.data.name}\n*Mati Pada Umur :* ${predea.data.age} Tahun.\n\n_Cepet Cepet Tobat Bro Soalnya Mati ga ada yang tau_`)
               break
-case 'halah': case 'hilih': case 'huluh': case 'heleh': case 'holoh':
-            if (!m.quoted && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
-            ter = command[1].toLowerCase()
-            tex = m.quoted ? m.quoted.text ? m.quoted.text : q ? q : m.text : q ? q : m.text
-            replyNya(tex.replace(/[aiueo]/g, ter).replace(/[AIUEO]/g, ter.toUpperCase()))
-            break
+case 'randomnama':
+if (!isPrem) return replyPremium(mess.premium)
+                    anu = await fetchJson(`https://api.lolhuman.xyz/api/random/nama?apikey=${lolkey}`)
+                    replyNya(anu.result)
+                    break
             case 'react': {
                 if (!isCreator) throw mess.owner
                 reactionMessage = {
@@ -1596,6 +1614,17 @@ let buttons = [
 await Dha.sendButtonText(m.chat, buttons, `Mode Autosticker`, Dha.user.name, m)
 }
 					break
+case 'dadu':
+case 'patrick':
+case 'amongus':
+case 'gawrgura':
+case 'anjing':
+case 'bucinstick':
+if (!isPrem) return replyPremium(mess.premium)
+replyNya(mess.wait)
+let buffer = await getBuffer(`https://api.lolhuman.xyz/api/sticker/${command}?apikey=${lolkey}`)
+Dha.sendMessage(m.chat, { sticker: buffer }, { quoted: m })
+break
                case 'group': case 'grup': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
@@ -1835,6 +1864,7 @@ case 'cringe':
 case 'cuddle':
 case 'highfive':
 case 'handhold':
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 axios.get(`https://api.waifu.pics/sfw/${command}`)
 .then(({data}) => {
@@ -1869,6 +1899,7 @@ break
             }
             break
 case 'smeme': case 'stickermeme': case 'stickmeme': {
+if (!isPrem) return replyPremium(mess.premium)
 let { TelegraPh } = require('./lib/uploader')
 if (!text) return replyNya(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks*`)
 if (text.includes('|')) return replyNya(`Kirim/Reply Foto Dengan Caption ${prefix + command} *teks*`)
@@ -1882,6 +1913,7 @@ await fs.unlinkSync(memek)
 }
 break
             case 'ebinary': {
+            if (!isPrem) return replyPremium(mess.premium)
             if (!m.quoted.text && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
             let { eBinary } = require('./lib/binary')
             let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
@@ -1890,6 +1922,7 @@ break
         }
         break
             case 'dbinary': {
+            if (!isPrem) return replyPremium(mess.premium)
             if (!m.quoted.text && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
             let { dBinary } = require('./lib/binary')
             let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
@@ -1897,6 +1930,13 @@ break
             replyNya(db)
         }
         break
+case 'emoji':
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Contoh: ${prefix + command} 🗿`)
+titor = await getBuffer(`https://api.lolhuman.xyz/api/smoji/${encodeURI(q)}?apikey=${lolkey}`)
+let encmedia = await Dha.sendImageAsSticker(m.chat, titor, m, { packname: global.packname, author: global.author })
+await fs.unlinkSync(encmedia)
+break
             case 'emojimix': {
 	        if (!text) throw `Example : ${prefix + command} 😅+🤔`
 		let [emoji1, emoji2] = text.split`+`
@@ -1908,6 +1948,7 @@ break
 	    }
 	    break
             case 'toimage': case 'toimg': {
+if (!isPrem) return replyPremium(mess.premium)
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `balas stiker dengan caption *${prefix + command}*`
                 replyNya(mess.wait)
@@ -1975,7 +2016,13 @@ break
                 await fs.unlinkSync(media)
             }
             break
+case 'ssweb':
+if (!q) throw `Link Nya?`
+replyNya(mess.wait)
+Dha.sendMessage(from, { image: { url: `https://api.lolhuman.xyz/api/ssweb?apikey=${lolkey}&url=${q}`}})
+break
 	        case 'tourl': {
+	        if (!isPrem) return replyPremium(mess.premium)
                 replyNya(mess.wait)
 		        let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader')
                 let media = await Dha.downloadAndSaveMediaMessage(quoted)
@@ -1990,6 +2037,7 @@ break
             }
             break
             case 'imagenobg': case 'removebg': case 'remove-bg': {
+            if (!isPrem) return replyPremium(mess.premium)
 	    if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
 	    if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
 	    if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
@@ -2211,7 +2259,7 @@ Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
          break
 case 'lk21':
 
-                    if (args.length == 0) return reply(`Example: ${prefix + command} Transformer`)
+                    if (args.length == 0) return replyNya(`Example: ${prefix + command} Transformer`)
                     replyNya(mess.wait)
                     query = args.join(" ")
                     fejfw = await fetchJson(`https://api.lolhuman.xyz/api/lk21?apikey=${lolkey}&query=${query}`)
@@ -2255,7 +2303,7 @@ url: 'https://github.com/Dhabotz'
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 },
 {"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
@@ -2288,7 +2336,7 @@ url: 'https://github.com/Dhabotz'
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 },
 {"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
@@ -2321,7 +2369,7 @@ url: 'https://github.com/Dhabotz'
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 },
 {"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
@@ -2354,7 +2402,7 @@ url: 'https://github.com/dhabotz'
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 },
 {"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
@@ -2387,7 +2435,7 @@ url: 'https://github.com/Dhabotz'
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 },
 {"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
@@ -2402,7 +2450,7 @@ break
                 Dha.sendMessage(m.chat, { image: { url: api('zenz', '/api/random/'+command, {}, 'apikey') }, caption: 'Generate Random ' + command }, { quoted: m })
             }
             break
-	    case 'couple': {
+	    case 'ppcouple': {
                 replyNya(mess.wait)
                 let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
                 let random = anu[Math.floor(Math.random() * anu.length)]
@@ -2410,6 +2458,334 @@ break
                 Dha.sendMessage(m.chat, { image: { url: random.female }, caption: `Couple Female` }, { quoted: m })
             }
 	    break
+case 'pornhub':
+case 'glitch':
+case 'avenger':
+case 'space':
+case 'ninjalogo':
+case 'marvelstudio':
+case 'lionlogo':
+case 'wolflogo':
+case 'steel3d':
+case 'wallgravity':
+case 'coolgravity':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Example: ${prefix + command} Akira Botz`)
+replyNya(mess.wait)
+txt1 = args[0]
+txt2 = args[1]
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/textprome2/${command}?apikey=${lolkey}&text1=${txt1}&text2=${txt2}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `${prefix}menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+//
+// DAPAT DARI REST DAFFA
+case 'calkboard':
+case 'airline':
+case 'surfingboard':
+case 'watercolor':
+case 'neonwriting':
+case 'arrowsigns':
+case 'birthdaycake':
+case 'glassbauble':
+case 'footballplayer':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Example: ${prefix + command} Dha Botz`)
+replyNya(mess.wait)
+txt1 = args[0]
+txt2 = args[1]
+imagenya = await getBuffer(`https://api.dapuhy.xyz/api/photofunia/${command}?text1=${txt1}&text2=${txt2}&apikey={dapkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `${prefix}menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'ktpmaker':
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Usage: ${prefix + command} nik|provinsi|kabupaten|nama|tempat, tanggal lahir|jenis kelamin|jalan|rt/rw|kelurahan|kecamatan|agama|status nikah|pekerjaan|warga negara|berlaku sampai|url_image\n\nExample: ${prefix + command} 456127893132123|bumipertiwi|fatamorgana|LoL Human|mars, 99-99-9999|belum ditemukan|jl wardoyo|999/999|turese|imtuni|alhamdulillah islam|jomblo kack|mikirin dia|indo ori no kw|hari kiamat|https://i.ibb.co/Xb2pZ88/test.jpg`)
+replyNya(mess.wait)
+                    get_args = args.join(" ").split("|")
+                    nik = get_args[0]
+                    prov = get_args[1]
+                    kabu = get_args[2]
+                    name = get_args[3]
+                    ttl = get_args[4]
+                    jk = get_args[5]
+                    jl = get_args[6]
+                    rtrw = get_args[7]
+                    lurah = get_args[8]
+                    camat = get_args[9]
+                    agama = get_args[10]
+                    nikah = get_args[11]
+                    kerja = get_args[12]
+                    warga = get_args[13]
+                    until = get_args[14]
+                    img = get_args[15]
+                    ini_buffer = await getBuffer(`https://api.lolhuman.xyz/api/ktpmaker?apikey=${lolkey}&nik=${nik}&prov=${prov}&kabu=${kabu}&name=${name}&ttl=${ttl}&jk=${jk}&jl=${jl}&rtrw=${rtrw}&lurah=${lurah}&camat=${camat}&agama=${agama}&nikah=${nikah}&kerja=${kerja}&warga=${warga}&until=${until}&img=${img}`)
+                    Dha.sendMessage(m.chat, { image: ini_buffer, caption: `*KTP MAKER*` }, { quoted: m})
+                    break
+case 'tiktokmaker':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Contoh: ${prefix + command} teks1 teks2`)
+replyNya(mess.wait)
+txt1 = args[0]
+txt2 = args[1]
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/photooxy2/tiktok?apikey=${lolkey}&text1=${txt1}&text2=${txt2}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `${prefix}menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'arcade8bit':
+case 'battlefield4':
+case 'pubg':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Contoh: ${prefix + command} teks1 teks2`)
+replyNya(mess.wait)
+txt1 = args[0]
+txt2 = args[1]
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/photooxy2/${command}?apikey=${lolkey}&text1=${txt1}&text2=${txt2}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/Dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `${prefix}menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'cecan':
+case 'cogan':{
+replyNya(mess.wait)
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/random/${command}?apikey=${lolkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: '© DhaBotz - MD',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/DhaBotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'hentai':{
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/random/nsfw/${command}?apikey=${lolkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: '© DhaBotz - MD',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/DhaBotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'chiisaihentai':
+case 'trap':
+case 'blowjob':
+case 'yaoi':
+case 'ecchi':
+case 'ahegao':
+case 'hololewd':
+case 'sideoppai':
+case 'animefeets':
+case 'animebooty':
+case 'animethighss':
+case 'hentaiparadise':
+case 'animearmpits':
+case 'hentaifemdom':
+case 'lewdanimegirls':
+case 'biganimetiddies':
+case 'animebellybutton':
+case 'hentai4everyone':{
+if (!isPrem) return replyPremium(mess.premium)
+replyaNya (mess.wait)
+hasil = await getBuffer(`https://api.lolhuman.xyz/api/random/nsfw/${command}?apikey=${lolkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: hasil }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Next","id": `${prefix+command}`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'art':
+case 'bts':
+case 'exo':
+case 'elf':
+case 'neko':
+case 'shota':
+case 'sagiri':
+case 'shinobu':
+case 'megumin':
+case 'wallnime':{
+if (!isPrem) return replyPremium(mess.premium)
+replyNya(mess.wait)
+hasil = await getBuffer(`https://api.lolhuman.xyz/api/random/${command}?apikey=${lolkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: hasil }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By DhaBotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/Dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Next","id": `${prefix + command}`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
             case 'coffe': case 'kopi': {
             let buttons = [
                     {buttonId: `coffe`, buttonText: {displayText: 'Next Image'}, type: 1}
@@ -2539,6 +2915,7 @@ case 'faktaunik':
 case 'katabijak': 
 case 'pantun': 
 case 'bucin': {
+if (!isPrem) return replyPremium(mess.premium)
 kohg = await fetchJson(`https://api.lolhuman.xyz/api/random/${command}?apikey=${lolkey}`)
 let buttons = [
 {buttonId: `${command}`, buttonText: {displayText: 'Next'}, type: 1}
@@ -2553,6 +2930,7 @@ Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
 }
 break
             case 'quotesanime': case 'quoteanime': {
+            if (!isPrem) return replyPremium(mess.premium)
 		let { quotesAnime } = require('./lib/scraper')
                 let anu = await quotesAnime()
                 result = anu[Math.floor(Math.random() * anu.length)]
@@ -2569,7 +2947,8 @@ break
             }
             break
 	        case 'motivasi': case 'dilanquote': case 'bucinquote': case 'katasenja': case 'puisi': {
-                let anu = await fetchJson(api('zenz', '/randomtext/'+command, {}, 'apikey'))
+              if (!isPrem) return replyPremium(mess.premium)
+                  let anu = await fetchJson(api('zenz', '/randomtext/'+command, {}, 'apikey'))
                 let buttons = [
                     {buttonId: `${command}`, buttonText: {displayText: 'Next'}, type: 1}
                 ]
@@ -2583,23 +2962,121 @@ break
             }
             break
             case '3dchristmas': case '3ddeepsea': case 'americanflag': case '3dscifi': case '3drainbow': case '3dwaterpipe': case 'halloweenskeleton': case 'sketch': case 'bluecircuit': case 'space': case 'metallic': case 'fiction': case 'greenhorror': case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dcrackedstone': case '3dneonlight': case 'impressiveglitch': case 'naturalleaves': case 'fireworksparkle': case 'matrix': case 'dropwater':  case 'harrypotter': case 'foggywindow': case 'neondevils': case 'christmasholiday': case '3dgradient': case 'blackpink': case 'gluetext': {
-                if (!text) throw `Example : ${prefix + command} text`
+             if (!isPrem) return replyPremium(mess.premium)
+                   if (!text) throw `Example : ${prefix + command} text`
                 replyNya(mess.wait)
                 Dha.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + command, { text: text }, 'apikey') }, caption: `Text Pro ${command}` }, { quoted: m})
 	    }
             break
 	    case 'shadow': case 'romantic': case 'smoke': case 'burnpapper': case 'naruto': case 'lovemsg': case 'grassmsg': case 'lovetext': case 'coffecup': case 'butterfly': case 'harrypotter': case 'retrolol': {
-                if (!text) throw 'No Query Text'
+          if (!isPrem) return replyPremium(mess.premium)
+                      if (!text) throw 'No Query Text'
                 replyNya(mess.wait)
                 Dha.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + command, { text: text }, 'apikey') }, caption: `Photo Oxy ${command}` }, { quoted: m })
             }
             break
             case 'ffcover': case 'crossfire': case 'galaxy': case 'glass': case 'neon': case 'beach': case 'igcertificate': case 'ytcertificate': {
-                if (!text) throw 'No Query Text'
+              if (!isPrem) return replyPremium(mess.premium)
+                  if (!text) throw 'No Query Text'
                 replyNya(mess.wait)
                 Dha.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + command, { text: text }, 'apikey') }, caption: `Ephoto ${command}` }, { quoted: m })
             }
             break
+case 'wetglass':
+case 'multicolor3d':
+case 'watercolor':
+case 'luxurygold':
+case 'galaxywallpaper':
+case 'lighttext':
+case 'beautifulflower':
+case 'puppycute':
+case 'royaltext':
+case 'heartshaped':
+case 'birthdaycake':
+case 'galaxystyle':
+case 'hologram3d':
+case 'greenneon':
+case 'glossychrome':
+case 'greenbush':
+case 'metallogo':
+case 'noeltext':
+case 'glittergold':
+case 'textcake':
+case 'starsnight':
+case 'wooden3d':
+case 'textbyname':
+case 'writegalacy':
+case 'galaxybat':
+case 'snow3d':
+case 'birthdayday':
+case 'goldplaybutton':
+case 'silverplaybutton':
+case 'freefire':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Example: ${prefix + command} teks`)
+replyNya(mess.wait)
+ini_txt = args.join(" ")
+imagenya = await getBuffer(`https://api.lolhuman.xyz/api/ephoto1/${command}?apikey=${lolkey}&text=${ini_txt}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By Dhabotz',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `${prefix}menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case 'nulis':{
+if (!isPrem) return replyPremium(mess.premium)
+if (args.length == 0) return replyNya(`Example: ${prefix + command} teks`)
+replyNya(mess.wait)
+ini_txt = args.join(" ")
+imagenya = await getBuffer(`https://api.dapuhy.xyz/api/maker/nulis?text=${ini_txt}&apikey=${dapkey}`)
+pll = `Nih Kak シ︎`
+let message = await prepareWAMessageMedia({ image: imagenya }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: pll,
+hydratedFooterText: 'Created By YUDHA PERDANA',
+hydratedButtons: [{
+urlButton: {
+displayText: 'MyGithub',
+url: 'https://github.com/dhabotz'
+}
+},
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},
+{"quickReplyButton": {"displayText": "Back To Menu","id": `menu`}}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
 case 'blackpink':
 case 'neon':
 case 'greenneon':
@@ -2634,7 +3111,7 @@ case 'horrorblood':
 case 'thunder':{
 if (!isPrem) return replyPremium(mess.premium)
 if (args.length == 0) return replyNya(`Example: ${prefix + command} Akira`)
-sticWait(from)
+replyNya(mess.wait)
 ini_txt = args.join(" ")
 imagenya = await getBuffer(`https://api.lolhuman.xyz/api/textprome/${command}?apikey=${lolkey}&text=${ini_txt}`)
 pll = `Nih Kak シ︎`
@@ -2704,6 +3181,34 @@ break
                 Dha.sendText(m.chat, `⭔ *Nama Anda :* ${anu.message.nama_anda.nama}\n⭔ *Lahir Anda :* ${anu.message.nama_anda.tgl_lahir}\n⭔ *Nama Pasangan :* ${anu.message.nama_pasangan.nama}\n⭔ *Lahir Pasangan :* ${anu.message.nama_pasangan.tgl_lahir}\n⭔ *Sisi Positif :* ${anu.message.sisi_positif}\n⭔ *Sisi Negatif :* ${anu.message.sisi_negatif}\n⭔ *Catatan :* ${anu.message.catatan}`, m)
             }
             break
+case 'namapeople':{
+if (!isPrem) return replyPremium(mess.premium)
+kohc = await fetchJson(`https://api.lolhuman.xyz/api/random/people?apikey=${lolkey}`)
+kohx = kohc.result
+ini_txt = `Nama : ${kohx.name.title} ${kohx.name.first} ${kohx.name.last}\n`
+ini_txt += `Gender : ${kohx.gender}\n`
+ini_txt += `Location Number : ${kohx.location.street.number}\n`
+ini_txt += `Location Name : ${kohx.location.street.name}\n`
+ini_txt += `Location City : ${kohx.location.city}\n`
+ini_txt += `Location State : ${kohx.location.state}\n`
+ini_txt += `Location Country : ${kohx.location.country}\n`
+ini_txt += `Location PostCode : ${kohx.location.postcode}\n`
+ini_txt += `Location Latitude : ${kohx.location.coordinates.latitude}\n`
+ini_txt += `Location Longitude : ${kohx.location.coordinates.longitude}\n`
+ini_txt += `Location Timeone : ${kohx.location.timezone.offset}\n`
+ini_txt += `Deskripsi : ${kohx.location.timezone.description}\n`
+let buttons = [
+{buttonId: `${command}`, buttonText: {displayText: 'Next'}, type: 1}
+]
+let buttonMessage = {
+text: ini_txt,
+footerText: 'Pencet Button Untuk Next',
+buttons: buttons,
+headerType: 2
+}
+Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
+}
+break
             case 'artinama': {
                 if (!text) throw `Example : ${prefix + command} Dika Ardianta`
                 let anu = await primbon.arti_nama(text)
@@ -3020,10 +3525,9 @@ Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
 }
 break
 case 'igstalk':{
-if (args.length == 0) return replyNya(`Example: ${prefix + command} namaig`)
+if (!q) return replyNya(`Example: ${prefix + command} namaig`)
 replyNya(mess.wait)
-igk = args.join(" ")
-deshd = await fetchJson(`https://api.lolhuman.xyz/api/stalkig/${igk}?apikey=${lolkey}`)
+deshd = await fetchJson(`https://api.lolhuman.xyz/api/stalkig/${q}?apikey=${lolkey}`)
 deshxs = deshd.result
 txt = `Link : https://www.instagram.com/${deshxs.username}\n`
 txt += `Full : ${deshxs.fullname}\n`
@@ -3031,8 +3535,8 @@ txt += `Post : ${deshxs.posts}\n`
 txt += `Followers : ${deshxs.followers}\n`
 txt += `Following : ${deshxs.following}\n`
 txt += `Bio : ${deshxs.bio}\n`
-buffer = await getBuffer(deshxs.photo_profile)
-let message = await prepareWAMessageMedia({ image: buffer }, { upload: Dha.waUploadToServer })
+qwe = await getBuffer(deshxs.photo_profile)
+let message = await prepareWAMessageMedia({ image: qwe }, { upload: Dha.waUploadToServer })
 const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
 templateMessage: {
 hydratedTemplate: {
@@ -3043,7 +3547,7 @@ hydratedButtons: [
 {
 urlButton: {
 displayText: 'MyOwner',
-url: 'https://wa.me/6287705048235'
+url: 'https://wa.me/6282287486762'
 }
 }]
 }
@@ -3062,6 +3566,12 @@ break
                     let anu = await fetchJson(api('zenz', '/api/nickff', { apikey: global.APIKeys[global.APIs['zenz']], query: id }))
                     if (anu.status == false) return replyNya(anu.result.message)
                     replyNya(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`)
+		    db.data.users[m.sender].limit -= 1
+		    } else if (type.toLowerCase() == 'ig') {
+                    if (!id) throw `No Query username, Example : ${prefix + command} ig cak_haho`
+                    let { result: anu } = await fetchJson(api('zenz', '/api/stalker/ig', { username: id }, 'apikey'))
+                    if (anu.status == false) return replyNya (anu.result.message)
+                    Dha.sendMedia(m.chat, anu.caption.profile_hd, '', `⭔ Full Name : ${anu.caption.full_name}\n⭔ User Name : ${anu.caption.user_name}\n⭔ ID ${anu.caption.user_id}\n⭔ Followers : ${anu.caption.followers}\n⭔ Following : ${anu.caption.following}\n⭔ Bussines : ${anu.caption.bussines}\n⭔ Profesional : ${anu.caption.profesional}\n⭔ Verified : ${anu.caption.verified}\n⭔ Private : ${anu.caption.private}\n⭔ Bio : ${anu.caption.biography}\n⭔ Bio Url : ${anu.caption.bio_url}`, m)
 		    db.data.users[m.sender].limit -= 1
                 } else if (type.toLowerCase() == 'ml') {
                     if (!id) throw `No Query id, Example : ${prefix + command} ml 214885010 2253`
@@ -3099,49 +3609,12 @@ break
                 }
             }
             break
-	        case 'tiktok': case 'tiktoknowm': {
-                if (!text) throw 'Masukkan Query Link!'
-                replyNya(mess.wait)
-                let anu = await fetchJson(api('zenz', '/downloader/tiktok', { url: text }, 'apikey'))
-                let buttons = [
-                    {buttonId: `tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1},
-                    {buttonId: `tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
-                ]
-                let buttonMessage = {
-                    video: { url: anu.result.nowatermark },
-                    caption: `Download From ${text}`,
-                    footer: 'Press The Button Below',
-                    buttons: buttons,
-                    headerType: 5
-                }
-                Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
-            }
-            break
-            case 'tiktokwm': case 'tiktokwatermark': {
-                if (!text) throw 'Masukkan Query Link!'
-                replyNya(mess.wait)
-                let anu = await fetchJson(api('zenz', '/downloader/tiktok', { url: text }, 'apikey'))
-                let buttons = [
-                    {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1},
-                    {buttonId: `tiktokmp3 ${text}`, buttonText: {displayText: '♫ Audio'}, type: 1}
-                ]
-                let buttonMessage = {
-                    video: { url: anu.result.watermark },
-                    caption: `Download From ${text}`,
-                    footer: 'Press The Button Below',
-                    buttons: buttons,
-                    headerType: 5
-                }
-                Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
-            }
-            break
             case 'tiktokmp3': case 'tiktokaudio': {
+if (!isPrem) return replyPremium(mess.premium)
                 if (!text) throw 'Masukkan Query Link!'
-                replyNya(mess.wait)
-                let anu = await fetchJson(api('zenz', '/downloader/musically', { url: text }, 'apikey'))
+                let anu = await getBuffer(`https://api.lolhuman.xyz/api/tiktokmusic?apikey=${lolkey}&url=${text}`)
                 let buttons = [
-                    {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1},
-                    {buttonId: `tiktokwm ${text}`, buttonText: {displayText: '► With Watermark'}, type: 1}
+                    {buttonId: `tiktoknowm ${text}`, buttonText: {displayText: '► No Watermark'}, type: 1}
                 ]
                 let buttonMessage = {
                     text: `Download From ${text}`,
@@ -3150,14 +3623,34 @@ break
                     headerType: 2
                 }
                 let msg = await Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
-                Dha.sendMessage(m.chat, { audio: { url: anu.result.audio }, mimetype: 'audio/mpeg'}, { quoted: msg })
+                Dha.sendMessage(m.chat, { audio: anu, mimetype: 'audio/mpeg'}, { quoted: msg })
             }
-            break
+break
+case 'tiktok': case 'tiktoknowm': {
+if (!isPrem) return replyPremium(mess.premium)
+if (!text) throw 'Masukkan Query Link!'
+replyNya(mess.wait)
+anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok?apikey=${lolkey}&url=${text}`)
+let message = await prepareWAMessageMedia({ video : { url: anu.result.link } }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+videoMessage: message.videoMessage,
+hydratedContentText: `Download From ${text}`,
+hydratedFooterText: `Klik Button Di Bawah`,
+hydratedButtons: [{ urlButton: { displayText: 'Source Video', url: `${text}` } },
+{ quickReplyButton: { displayText: '⇄   ◃◃   ⅠⅠ   ▹▹   ↻', id: `${prefix}tiktokaudio ${text}` } }]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
 	        case 'instagram': case 'ig': case 'igdl': {
                 if (!text) throw 'No Query Url!'
                 replyNya(mess.wait)
                 if (/(?:\/p\/|\/reel\/|\/tv\/)([^\s&]+)/.test(isUrl(text)[0])) {
-                    let anu = await fetchJson(api('zenz', '/downloader/instagram2', { url: isUrl(text)[0] }, 'apikey'))
+                    let anu = await fetchJson(api('zenz', '/downloader/instagram', { url: isUrl(text)[0] }, 'apikey'))
                     for (let media of anu.data) Dha.sendMedia(m.chat, media, '', `Download Url Instagram From ${isUrl(text)[0]}`, m)
                 } else if (/\/stories\/([^\s&]+)/.test(isUrl(text)[0])) {
                     let anu = await fetchJson(api('zenz', '/downloader/instastory', { url: isUrl(text)[0] }, 'apikey'))
@@ -3239,6 +3732,16 @@ break
                 Dha.sendMessage(m.chat, { video: { url: anu.result }, caption: `Download From ${text}` }, { quoted: m })
             }
             break
+case 'mediafire':{
+if (!isPrem) return replyPremium(mess.premium)
+oh = `Example : ${prefix + command} link`
+if (!text) throw oh
+replyNya(mess.wait)
+kfeh = await fetchJson(`https://api.lolhuman.xyz/api/mediafire?apikey=${lolkey}&url=${text}`)
+mnya = await getBuffer(kfeh.result.link)
+Dha.sendMessage(m.chat, {document: mnya, mimetype: 'application/zip', fileName: `${kfeh.result.filename}.zip`}, {quoted:m}).catch ((err) => replyNya (oh))
+}
+break
             case 'umma': case 'ummadl': {
 	        if (!text) throw `Example : ${prefix + command} https://umma.id/channel/video/post/gus-arafat-sumber-kecewa-84464612933698`
                 let { umma } = require('./lib) scraper')
@@ -3278,6 +3781,8 @@ Untuk Download Media Silahkan Klik salah satu Button dibawah ini atau masukkan c
 		Dha.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })
 	    }
 	    break
+// REST AREA
+// BATAS AREA
 		case 'iqra': {
 		oh = `Example : ${prefix + command} 3\n\nIQRA Yang tersedia : 1,2,3,4,5,6`
 		if (!text) throw oh
@@ -3368,6 +3873,67 @@ ${id}`)
 		replyNya(txt)
 		}
 		break
+case 'asmaulhusna': {
+get_result = await fetchJson(`https://api.lolhuman.xyz/api/asmaulhusna?apikey=${lolkey}`)
+get_result = get_result.result
+ini_txt = `No : ${get_result.index}\n`
+ini_txt += `Latin: ${get_result.latin}\n`
+ini_txt += `Arab : ${get_result.ar}\n`
+ini_txt += `Indonesia : ${get_result.id}\n`
+ini_txt += `English : ${get_result.en}`
+let buttons = [
+{buttonId: `${command}`, buttonText: {displayText: 'Next'}, type: 1}
+]
+let buttonMessage = {
+text: ini_txt,
+footerText: 'Pencet Button Untuk Next',
+buttons: buttons,
+headerType: 2
+}
+Dha.sendMessage(m.chat, buttonMessage, { quoted: m })
+}
+break
+case 'kisahnabi':
+if (args.length == 0) return replyNya(`Example: ${prefix + command} Muhammad`)
+query = args.join(" ")
+get_result = await fetchJson(`http://api.lolhuman.xyz/api/kisahnabi/${query}?apikey=${lolkey}`)
+get_result = get_result.result
+ini_txt = `Name : ${get_result.name}\n`
+ini_txt += `Lahir : ${get_result.thn_kelahiran}\n`
+ini_txt += `Umur : ${get_result.age}\n`
+ini_txt += `Tempat : ${get_result.place}\n`
+ini_txt += `Story : \n${get_result.story}`
+replyNya(ini_txt)
+break
+case 'jadwalsholat':	
+if (args.length == 0) return replyNya(`Example: ${prefix + command} Yogyakarta`)
+daerah = args.join(" ")
+get_result = await fetchJson(`http://api.lolhuman.xyz/api/sholat/${daerah}?apikey=${lolkey}`)
+get_result = get_result.result
+ini_txt = `Wilayah : ${get_result.wilayah}\n`
+ini_txt += `Tanggal : ${get_result.tanggal}\n`
+ini_txt += `Sahur : ${get_result.sahur}\n`
+ini_txt += `Imsak : ${get_result.imsak}\n`
+ini_txt += `Subuh : ${get_result.subuh}\n`
+ini_txt += `Terbit : ${get_result.terbit}\n`
+ini_txt += `Dhuha : ${get_result.dhuha}\n`
+ini_txt += `Dzuhur : ${get_result.dzuhur}\n`
+ini_txt += `Ashar : ${get_result.ashar}\n`
+ini_txt += `Maghrib : ${get_result.maghrib}\n`
+ini_txt += `Isya : ${get_result.isya}`
+replyNya(ini_txt)
+break
+case 'listsurah':
+get_result = await fetchJson(`https://api.lolhuman.xyz/api/quran?apikey=${lolkey}`)
+get_result = get_result.result
+ini_txt = 'List Surah:\n'
+for (var x in get_result) {
+ini_txt += `${x}. ${get_result[x]}\n`
+}
+replyNya(ini_txt)
+break
+/// HEEEEEEEEEEEEE
+/// APAAAN SIH
 		   case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
                 let set
@@ -3667,11 +4233,27 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             }
             break
-            case 'owner': case 'creator': {
+            case 'owner': {
                 Dha.sendContact(m.chat, global.owner, m)
             }
             break
+case 'creator': {
+let vcard = `BEGIN:VCARD\n`
++ `VERSION:3.0\n`
++ `N:YUDHA PERDANA`
++ `FN:YUDHA PERDANA\n`
++ `ORG:YUDHA PERDANA\n`
++ `TEL;type=CELL;type=VOICE;waid=6282287486762:6282287486762\n`
++ `item1.X-ABLabel:♕ Creator\n`
++ `item4.X-ABLabel:⚐︎ Indonesia\n`
++ `item5.X-ABLabel:⚔ DhaBotz\n`
++ `END:VCARD`
+let kir = await Dha.sendMessage(m.chat, { contacts: { displayName: `YUDHA PERDANA`, contacts: [{ vcard }] } }, { quoted: m })
+await replyOwnerr(`Itu Creator Bot Ini`)
+}
+break
 case 'asupan': case 'asupan2':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 hasilnya = await getBuffer(`https://api.zacros.my.id/asupan/random`)
 let btn = [
@@ -3685,35 +4267,41 @@ let btn = [
                       }
                       break
 case 'asupan3':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 hasiltod = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=${lolkey}`)
 Dha.sendMessage(m.chat, { video: { url: hasiltod.result }, mimetype: 'video/mp4', fileName: `asupan.mp4`, caption: `Nih Asupan Nya` }, { quoted: m })
 }
 break
 case 'ukhty':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 hasily = await fetchJson(`https://spybot-api.herokuapp.com/api/asupan/ukty?apikey=SpyBotApi`)
 Dha.sendMessage(m.chat, { video: { url: hasily.result.url }, mimetype: 'video/mp4', fileName: `${command}.mp4`, caption: `Nih Asupan Nya` }, { quoted: m })
 }
 break
 case 'santuy':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 hasily = await fetchJson(`https://raku-web.herokuapp.com/api/asupan/santuy?apikey=RakuKeyTod`)
 Dha.sendMessage(m.chat, { video: { url: hasily.result.url }, mimetype: 'video/mp4', fileName: `${command}.mp4`, caption: `Nih Asupan Nya` }, { quoted: m })
 }
 break
 case 'bocil':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 hasily = await fetchJson(`https://spybot-api.herokuapp.com/api/asupan/bocil?apikey=SpyBotApi`)
 Dha.sendMessage(m.chat, { video: { url: hasily.result.url }, mimetype: 'video/mp4', fileName: `${command}.mp4`, caption: `Nih Asupan Nya` }, { quoted: m })
 }
 break
 case 'bokep':{
+if (!isPrem) return replyPremium(mess.premium)
 replyNya(mess.wait)
 dwhe = await getBuffer(`https://raku-web.herokuapp.com/api/bokep?apikey=RakuKeyTod`)
 Dha.sendMessage(m.chat, { video: dwhe, mimetype: 'video/mp4', fileName: `${command}.mp4`, caption: `Nih Bokep Nya` }, { quoted: m })
 }
 break
+
 case 'storyanime':{
 replyNya(mess.wait)
 hasiltod = await fetchJson(`https://api.lolhuman.xyz/api/storynime?apikey=${lolkey}`)
@@ -3721,44 +4309,398 @@ Dha.sendMessage(m.chat, { video: { url: hasiltod.result }, mimetype: 'video/mp4'
 }
 break
 
+case 'listpremium':
+case 'listprem':
+if (!m.key.fromMe && !isCreator) return replyNya(mess.owner)
+teks = '*List Premium*\n\n'
+for (let Dha of prem) {
+teks += `- ${Dha}\n`
+}
+teks += `\n*Total : ${prem.length}*`
+Dha.sendMessage(from, { text: teks.trim() }, 'extendedTextMessage', { quoted: m, contextInfo: { "mentionedJid": prem } })
+break
+case 'addprem':
+if (!m.isGroup) return replyNya(mess.group)
+if (!m.key.fromMe && !isCreator) return replyNya(mess.owner)
+bnnd = `${args[0].replace('@', '')}@s.whatsapp.net`
+prem.push(bnnd)
+fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+replyNya(`Nomor ${bnnd} Telah Menjadi Premium!`)
+break
+case 'delprem':
+if (!m.isGroup) return replyNya(mess.group)
+if (!m.key.fromMe && !isCreator) return replyNya(mess.owner)
+ya = `${args[0].replace('@', '')}@s.whatsapp.net`
+unp = prem.indexOf(ya)
+prem.splice(unp, 1)
+fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+replyNya(`Nomor ${ya} Telah Di Hapus Premium!`)
+break
+case 'donate': 
+case 'buypremium':
+case 'donasi':
+case 'bayar':
+case 'sewabot':{
+const ov = ['5', '10', '15' ,'20', '25','30','35','40','45','50']
+const tenr = ov[Math.floor(Math.random() * ov.length)]
+donte = `_Mau ${command} Scan Di Atas Kak_
+_Minimal ${tenr}.000 Untuk ${command}_
+_Jika Sudah Membayar Silahkan Hubungi Dan Kirim Bukti Pembayaran Ke Owner_
+_Selamat Menggaca Semoga Hoki_`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donte,
+hydratedFooterText: '© DhaBotz - MD',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+}]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+case'%':{
+ txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+  txt4 = args[3]
+if (!isCreator) throw mess.owner
+Dha.sendMessage(`${m.sender.split("@")[0]}@s.whatsapp.net`, {text: `N.BARANG : ${txt1}\nNO/ID : ${txt2}\nJUMLAH ${txt3}\nHARGA : ${txt4}\nSTATUS : *SUCCES*\nSILAKAN DI CEK TERIMAKASIH` })
+                   }
+                    break 
+case'ulasan':{
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*KRITIK/SARAN From:* wa.me/${m.sender.split("@")[0]}
+Message: ${text}` })
+replyNya(`SARAN ANDA SANGAT BERGUNA BAGI OWNER KAMI UNTUK PERKEMBANGAN BOT INI JADI TOLONG BERIKAN SARAN YG BAIK DAN BERGUNA\nTERIMAKASIH~`)
+                    }
+                    break 
+                    
+case'wtf':{
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Cancel Order From:*\nwa.me/${m.sender.split("@")[0]}\nBarang Pesanan\n N.Barang: ${txt1}\nJumlah: ${txt2}\nHarga: ${txt3}` })
+replyTemplate(`ORDERAN SUDAH DI BATALKAN LAIN KALI ORDER JANGAN MAIN MAIN`)
+                    }
+                    break                     
+///__&&&& batas area
+case 'topuppulsa':{
+if (args.length == 0) return  replyNya(`${prefix + command} nohp jumlahpulsa harga\nContoh: ${prefix + command} 82287486762 5.000 7.000`)
+txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/freefire/${txt1}?apikey=${lolkey}`)
+donten = `NO.HP : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topupnelpon':{
+  txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+  txt4 = args[3]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/freefire/${txt1}?apikey=${lolkey}`)
+donten = `NO.HP : ${txt1}\nJumlah : ${txt2}\nWaktu : ${txt3}\nHarga : ${txt4}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topuplistrik':{
+if (args.length == 0) return  replyNya(`${prefix + command} Id listrik tegangan harga\nContoh: ${prefix + command} 181801003458 20.000 22.000`)
+txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/freefire/${txt1}?apikey=${lolkey}`)
+donten = `ID PLN : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topupff':{
+if (args.length == 0) return  replyNya(`${prefix + command} Idgame jumlahdm\nContoh: ${prefix + command} 1345834683 70 10.000`)
+txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/freefire/${txt1}?apikey=${lolkey}`)
+donten = `ID FF : ${txt1}\nUsername : ${anu.result}\nJumlah : ${txt2}\nHarga : ${txt3}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topupdomino':{
+if (args.length == 0) return  replyNya(`${prefix + command} Idgame jumlahcip\nContoh: ${prefix + command} 291756557 1b`)
+txt1 = args[0]
+  txt2 = args[1]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/higghdomino/${txt1}?apikey=${lolkey}`)
+donten = `ID DOMINO : ${txt1}\nUsername : ${anu.result}\nJumlah : ${txt2}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topuppubg':{
+if (args.length == 0) return  replyNya(`${prefix + command} Idgame jumlahuc\nContoh: ${prefix + command} 5119961143 50`)
+txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/pubg/${txt1}?apikey=${lolkey}`)
+donten = `ID PUBG : ${txt1}\nUsername : ${anu.result}\nJumlah : ${txt2}\nHarga : ${txt3}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
+case 'topupml':{
+if (args.length == 0) return  replyNya(`${prefix + command} Idgame/idnegara jumlahdm\nContoh: ${prefix + command} 84830127/2169 50 10.000`)
+txt1 = args[0]
+  txt2 = args[1]
+  txt3 = args[2]
+replyNya(mess.wait)				
+let anu = await fetchJson(`https://api.lolhuman.xyz/api/mobilelegend/${q}?apikey=${lolkey}`)
+donten = `ID ML : ${txt1}\nUsername : ${anu.result}\nJumlah : ${txt2}\nHarga : ${txt3}`
+let message = await prepareWAMessageMedia({ image: fs.readFileSync('./image/yudha.jpg') }, { upload: Dha.waUploadToServer })
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+imageMessage: message.imageMessage,
+hydratedContentText: donten,
+hydratedFooterText: 'Silahkan Scan Barcode Diatas Masukan Nominal Sesuai Harga',
+hydratedButtons: [
+{
+urlButton: {
+displayText: 'MyOwner',
+url: 'https://wa.me/6282287486762'
+}
+},{
+                                quickReplyButton: {
+                                    displayText: 'SUDAH TF',
+                                    id: 'wtk'
+                                }
+                            },
+{
+                                quickReplyButton: {
+                                    displayText: 'CANCEL',
+                                    id: 'wtf'
+                                }
+                            } ]
+}
+}
+}), { userJid: m.chat, quoted: m })
+Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+Dha.sendMessage(`6282287486762@s.whatsapp.net`, {text: `*Orderan From:* wa.me/${m.sender.split("@")[0]}\n\n Nomor : ${txt1}\nJumlah : ${txt2}\nHarga : ${txt3}` })
+}
+break
 //======={{{{{{{{{
-case 'menu':
-await Dha.send5ButImg(from, `͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏Hai ${pushname}
-Aku Adalah Bot WhatsApp Multi Divice Yang Siap Membantu
-
-           *Syarat Dan Ketentuan*
-1. Teks Dan Nama Pengguna WhatsApp Anda Kami Simpan Di Dalam Server Selama Bot Aktif
-
-2. Data Anda Akan Di Hapus Ketika Bot Offline
-
-3. Kami Tidak Menyimpan Gambar, Video, File, Audio, Dan Dokumen Yang Anda Kirim
-
-4. Kami Tidak Pernah Meminta Anda Untuk Memberikan Informasi Pribadi
-
-5. Jika Menemukan Bug/Error silahkan langsung lapor ke Owner Bot
-
-6. Cukup Perintah 1x Jika Bot Tidak Merespon Harap Ulangi Kembali, Jika Di Ulangi Kembali Tidak Merespon, Bot Tidak Aktif
-
-7. Anggarang Spam, Share Virus Virtex, Telpon, Video Call, Kami Akan Blockir Anda
-
-8. Apapun yang anda perintah pada bot ini, Kami Tidak Bertanggung Jawab
-Terimakasih!~`, `© ${footer}`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}},{"quickReplyButton": {"displayText": "List Menu","id": 'allmenu'}}] )
+case 'menu':{
+let timestamp = speed()
+let latensi = speed() - timestamp
+await Dha.send5ButGif(from, `──────[ ${ya}Info User${ya} ]
+➥ ${ya}Nama User${ya} : ${pushname}
+➥ ${ya}Nomor User${ya} : ${m.sender.split("@")[0]}
+➥ ${ya}User Premium${ya} : ${isPrem ? 'I͎y͎a͎' : 'T͎i͎d͎a͎k͎'}
+➥ ${ya}User Bot${ya} : ${Object.keys(global.db.data.users).length} User
+➥ ${ya}Active${ya} : ${runtime(process.uptime())}
+➥ ${ya}Library${ya} : Baileys Multi Device
+➥ ${ya}Wib${ya} : ${wib}
+➥ ${ya}Wit${ya} : ${wit}
+➥ ${ya}Wita${ya} : ${wita}`,`I’m From Indonesia 🇲🇨`, [
+{"urlButton": {"displayText": "YOUTUBE","url": `https://youtube.com/dhabotz`}},
+{"quickReplyButton": {"displayText": "LIST STORE","id": 'storemenu'}},
+{"quickReplyButton": {"displayText": "LIST MENU","id": 'command'}},
+{"quickReplyButton": {"displayText": "CREATOR","id": 'creator'}}] )
+}
 break
 case 'allmenu':
-const ya = '```'
-const ye = '*'
 var Yy = 0
 await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
-│ ${ya}${Yy+=1}speedtest${ya}
-│ ${ya}${Yy+=1}ping${ya}
-│ ${ya}${Yy+=1}owner${ya}
-│ ${ya}${Yy+=1}menu${ya}
-│ ${ya}${Yy+=1}delete${ya}
-│ ${ya}${Yy+=1}infochat${ya}
-│ ${ya}${Yy+=1}quoted${ya}
-│ ${ya}${Yy+=1}listpc${ya}
-│ ${ya}${Yy+=1}listgc${ya}
-│ ${ya}${Yy+=1}listonline${ya}
+│ ${ya} ${Yy+=1} speedtest${ya}
+│ ${ya} ${Yy+=1} ping${ya}
+│ ${ya} ${Yy+=1} owner${ya}
+│ ${ya} ${Yy+=1} menu${ya}
+│ ${ya} ${Yy+=1} delete${ya}
+│ ${ya} ${Yy+=1} infochat${ya}
+│ ${ya} ${Yy+=1} quoted${ya}
+│ ${ya} ${Yy+=1} listpc${ya}
+│ ${ya} ${Yy+=1} listgc${ya}
+│ ${ya} ${Yy+=1} listonline${ya}
 └───────
 ┌──[ ${ye}OWNER MENU${ye} ]
 │ ${ya}${Yy+=1} $ Evalator${ya}
@@ -3811,37 +4753,37 @@ await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
 │ ${ya}${Yy+=1} ${prefix}robot${ya}
 │ ${ya}${Yy+=1} ${prefix}tupai${ya}
 └──────
-┌── 「 *Primbon Menu* 」
-├ ${prefix}nomorhoki
-├ ${prefix}artimimpi
-├ ${prefix}artinama
-├ ${prefix}ramaljodoh
-├ ${prefix}ramaljodohbali
-├ ${prefix}suamiistri
-├ ${prefix}ramalcinta
-├ ${prefix}cocoknama
-├ ${prefix}pasangan
-├ ${prefix}jadiannikah
-├ ${prefix}sifatusaha
-├ ${prefix}rezeki
-├ ${prefix}pekerjaan
-├ ${prefix}nasib
-├ ${prefix}penyakit
-├ ${prefix}tarot
-├ ${prefix}fengshui
-├ ${prefix}haribaik
-├ ${prefix}harisangar
-├ ${prefix}harisial
-├ ${prefix}nagahari
-├ ${prefix}arahrezeki
-├ ${prefix}peruntungan
-├ ${prefix}weton
-├ ${prefix}karakter
-├ ${prefix}keberuntungan
-├ ${prefix}memancing
-├ ${prefix}masasubur
-├ ${prefix}zodiak
-├ ${prefix}shio
+┌──[ ${ye}PRIMBON MENU${ye} ]
+│ ${ya}${Yy+=1} ${prefix}nomorhoki${ya}
+│ ${ya}${Yy+=1} ${prefix}artimimpi${ya}
+│ ${ya}${Yy+=1} ${prefix}artinama${ya}
+│ ${ya}${Yy+=1} ${prefix}ramaljodoh${ya}
+│ ${ya}${Yy+=1} ${prefix}ramaljodohbali${ya}
+│ ${ya}${Yy+=1} ${prefix}suamiistri${ya}
+│ ${ya}${Yy+=1} ${prefix}ramalcinta${ya}
+│ ${ya}${Yy+=1} ${prefix}cocoknama${ya}
+│ ${ya}${Yy+=1} ${prefix}pasangan${ya}
+│ ${ya}${Yy+=1} ${prefix}jadiannikah${ya}
+│ ${ya}${Yy+=1} ${prefix}sifatusaha${ya}
+│ ${ya}${Yy+=1} ${prefix}rezeki${ya}
+│ ${ya}${Yy+=1} ${prefix}pekerjaan${ya}
+│ ${ya}${Yy+=1} ${prefix}nasib${ya}
+│ ${ya}${Yy+=1} ${prefix}penyakit${ya}
+│ ${ya}${Yy+=1} ${prefix}tarot${ya}
+│ ${ya}${Yy+=1} ${prefix}fengshui${ya}
+│ ${ya}${Yy+=1} ${prefix}haribaik${ya}
+│ ${ya}${Yy+=1} ${prefix}harisangar${ya}
+│ ${ya}${Yy+=1} ${prefix}harisial${ya}
+│ ${ya}${Yy+=1} ${prefix}nagahari${ya}
+│ ${ya}${Yy+=1} ${prefix}arahrezeki${ya}
+│ ${ya}${Yy+=1} ${prefix}peruntungan${ya}
+│ ${ya}${Yy+=1} ${prefix}weton${ya}
+│ ${ya}${Yy+=1} ${prefix}karakter${ya}
+│ ${ya}${Yy+=1} ${prefix}keberuntungan${ya}
+│ ${ya}${Yy+=1} ${prefix}memancing${ya}
+│ ${ya}${Yy+=1} ${prefix}masasubur${ya}
+│ ${ya}${Yy+=1} ${prefix}zodiak${ya}
+│ ${ya}${Yy+=1} ${prefix}shio${ya}
 └───────
 ┌──[ ${ye}TEKS MENU${ye} ]
 │ ${ya}${Yy+=1} ${prefix}lirik${ya}
@@ -4009,7 +4951,6 @@ await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
 │ ${ya}${Yy+=1} ${prefix}spotify <link>${ya}
 │ ${ya}${Yy+=1} ${prefix}spotifysearch <query>${ya}
 │ ${ya}${Yy+=1} ${prefix}jooxplay <query>${ya}
-│ ${ya}${Yy+=1} ${prefix}tiktokwm <query>${ya}
 │ ${ya}${Yy+=1} ${prefix}jooxplay <query>${ya}
 │ ${ya}${Yy+=1} ${prefix}instagram <query>${ya}
 │ ${ya}${Yy+=1} ${prefix}twitter <query>${ya}
@@ -4133,7 +5074,16 @@ await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
 │ ${ya}${Yy+=1} ${prefix}sound73${ya}
 │ ${ya}${Yy+=1} ${prefix}sound74${ya}
 └──────
-┌──[ ${ye}LOGO MENU${ye} ]
+┌──[ ${ye}LOGO AND TEXT MENU${ye} ]
+│ ${ya}${Yy+=1} calkboard${ya}
+│ ${ya}${Yy+=1} airline${ya}
+│ ${ya}${Yy+=1} surfingboard${ya}
+│ ${ya}${Yy+=1} watercolor${ya}
+│ ${ya}${Yy+=1} neonwriting${ya}
+│ ${ya}${Yy+=1} arrowsigns${ya}
+│ ${ya}${Yy+=1} birthdaycake${ya}
+│ ${ya}${Yy+=1} glassbauble${ya}
+│ ${ya}${Yy+=1} footballplayer${ya}
 │ ${ya}${Yy+=1} ${prefix}tololserti${ya}
 │ ${ya}${Yy+=1} ${prefix}shadow${ya}
 │ ${ya}${Yy+=1} ${prefix}cup${ya}
@@ -4373,8 +5323,1577 @@ await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
 └──────
 Note: 
 Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
-Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}},{"quickReplyButton": {"displayText": "Donasi","id": 'donate'}},{"quickReplyButton": {"displayText": "Owner","id": 'owner'}}] )
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
 break
+case 'infomenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}INFORMASI MENU${ye} ]
+│ ${ya} •speedtest${ya}
+│ ${ya} •ping${ya}
+│ ${ya} •owner${ya}
+│ ${ya} •menu${ya}
+│ ${ya} •delete${ya}
+│ ${ya} •infochat${ya}
+│ ${ya} •quoted${ya}
+│ ${ya} •listpc${ya}
+│ ${ya} •listgc${ya}
+│ ${ya} •listonline${ya}
+└───────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'ownermenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}OWNER MENU${ye} ]
+│ ${ya}• $ Evalator${ya}
+│ ${ya}• > Executor${ya}
+│ ${ya}• ${prefix}sewa add waktu${ya}
+│ ${ya}• ${prefix}sewa del${ya}
+│ ${ya}• ${prefix}listsewa${ya}
+│ ${ya}• ${prefix}ceksewa${ya}
+│ ${ya}• ${prefix}join${ya}
+│ ${ya}• ${prefix}public${ya}
+│ ${ya}• ${prefix}self${ya}
+│ ${ya}• ${prefix}leave${ya}
+│ ${ya}• ${prefix}addprem${ya}
+│ ${ya}• ${prefix}delprem${ya}
+│ ${ya}• ${prefix}block${ya}
+│ ${ya}• ${prefix}unblock${ya}
+│ ${ya}• ${prefix}bcall${ya}
+│ ${ya}• ${prefix}bcgc${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'othermenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}OTHER MENU${ye} ]
+│ ${ya}• ${prefix}owner${ya}
+│ ${ya}• ${prefix}credits${ya}
+│ ${ya}• ${prefix}groupdha${ya}
+│ ${ya}• ${prefix}rules${ya}
+│ ${ya}• ${prefix}donasi${ya}
+│ ${ya}• ${prefix}sewabot${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'convertmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}CONVERST MENU${ye} ]
+│ ${ya}• ${prefix}toimg${ya}
+│ ${ya}• ${prefix}tovideo${ya}
+│ ${ya}• ${prefix}tovn${ya}
+│ ${ya}• ${prefix}tomp3${ya}
+│ ${ya}• ${prefix}ssweb${ya}
+│ ${ya}• ${prefix}removebg${ya}
+│ ${ya}• ${prefix}togif${ya}
+│ ${ya}• ${prefix}tourl${ya}
+│ ${ya}• ${prefix}toaudio${ya}
+│ ${ya}• ${prefix}ebinary${ya}
+│ ${ya}• ${prefix}dbinary${ya}
+│ ${ya}• ${prefix}styletext${ya}
+│ ${ya}• ${prefix}bass${ya}
+│ ${ya}• ${prefix}blown${ya}
+│ ${ya}• ${prefix}deep${ya}
+│ ${ya}• ${prefix}earrape${ya}
+│ ${ya}• ${prefix}fast${ya}
+│ ${ya}• ${prefix}fat${ya}
+│ ${ya}• ${prefix}nightcore${ya}
+│ ${ya}• ${prefix}reverse${ya}
+│ ${ya}• ${prefix}slow${ya}
+│ ${ya}• ${prefix}robot${ya}
+│ ${ya}• ${prefix}tupai${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'primbonmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}PRIMBON MENU${ye} ]
+│ ${ya}• ${prefix}nomorhoki${ya}
+│ ${ya}• ${prefix}artimimpi${ya}
+│ ${ya}• ${prefix}artinama${ya}
+│ ${ya}• ${prefix}ramaljodoh${ya}
+│ ${ya}• ${prefix}ramaljodohbali${ya}
+│ ${ya}• ${prefix}suamiistri${ya}
+│ ${ya}• ${prefix}ramalcinta${ya}
+│ ${ya}• ${prefix}cocoknama${ya}
+│ ${ya}• ${prefix}pasangan${ya}
+│ ${ya}• ${prefix}jadiannikah${ya}
+│ ${ya}• ${prefix}sifatusaha${ya}
+│ ${ya}• ${prefix}rezeki${ya}
+│ ${ya}• ${prefix}pekerjaan${ya}
+│ ${ya}• ${prefix}nasib${ya}
+│ ${ya}• ${prefix}penyakit${ya}
+│ ${ya}• ${prefix}tarot${ya}
+│ ${ya}• ${prefix}fengshui${ya}
+│ ${ya}• ${prefix}haribaik${ya}
+│ ${ya}• ${prefix}harisangar${ya}
+│ ${ya}• ${prefix}harisial${ya}
+│ ${ya}• ${prefix}nagahari${ya}
+│ ${ya}• ${prefix}arahrezeki${ya}
+│ ${ya}• ${prefix}peruntungan${ya}
+│ ${ya}• ${prefix}weton${ya}
+│ ${ya}• ${prefix}karakter${ya}
+│ ${ya}• ${prefix}keberuntungan${ya}
+│ ${ya}• ${prefix}memancing${ya}
+│ ${ya}• ${prefix}masasubur${ya}
+│ ${ya}• ${prefix}zodiak${ya}
+│ ${ya}• ${prefix}shio${ya}
+└───────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'teksmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}TEKS MENU${ye} ]
+│ ${ya}• ${prefix}lirik${ya}
+│ ${ya}• ${prefix}translate${ya}
+│ ${ya}• ${prefix}namapeople${ya}
+│ ${ya}• ${prefix}cerpen${ya}
+│ ${ya}• ${prefix}ceritahoror${ya}
+│ ${ya}• ${prefix}faktaunik${ya}
+│ ${ya}• ${prefix}katabijak${ya}
+│ ${ya}• ${prefix}pantun${ya}
+│ ${ya}• ${prefix}bucin${ya}
+│ ${ya}• ${prefix}quoteanime${ya}
+│ ${ya}• ${prefix}motivasi${ya}
+│ ${ya}• ${prefix}dilanquote${ya}
+│ ${ya}• ${prefix}bucinquote${ya}
+│ ${ya}• ${prefix}katasenja${ya}
+│ ${ya}• ${prefix}puisi${ya}
+│ ${ya}• ${prefix}randomnama${ya}
+│ ${ya}• ${prefix}halah${ya}
+│ ${ya}• ${prefix}hilih${ya}
+│ ${ya}• ${prefix}huluh${ya}
+│ ${ya}• ${prefix}heleh${ya}
+│ ${ya}• ${prefix}holoh${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'stickermenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}STICKER MENU${ye} ]
+│ ${ya}• ${prefix}sticker${ya}
+│ ${ya}• ${prefix}attp${ya}
+│ ${ya}• ${prefix}ttp${ya}
+│ ${ya}• ${prefix}cry${ya}
+│ ${ya}• ${prefix}kill${ya}
+│ ${ya}• ${prefix}hug${ya}
+│ ${ya}• ${prefix}pat${ya}
+│ ${ya}• ${prefix}lick${ya}
+│ ${ya}• ${prefix}kiss${ya}
+│ ${ya}• ${prefix}bite${ya}
+│ ${ya}• ${prefix}yeet${ya}
+│ ${ya}• ${prefix}bully${ya}
+│ ${ya}• ${prefix}bonk${ya}
+│ ${ya}• ${prefix}wink${ya}
+│ ${ya}• ${prefix}poke${ya}
+│ ${ya}• ${prefix}nom${ya}
+│ ${ya}• ${prefix}slap${ya}
+│ ${ya}• ${prefix}smile${ya}
+│ ${ya}• ${prefix}wave${ya}
+│ ${ya}• ${prefix}awoo${ya}
+│ ${ya}• ${prefix}blush${ya}
+│ ${ya}• ${prefix}smug${ya}
+│ ${ya}• ${prefix}glomp${ya}
+│ ${ya}• ${prefix}happy${ya}
+│ ${ya}• ${prefix}dance${ya}
+│ ${ya}• ${prefix}cringe${ya}
+│ ${ya}• ${prefix}cuddle${ya}
+│ ${ya}• ${prefix}highfive${ya}
+│ ${ya}• ${prefix}handhold${ya}
+│ ${ya}• ${prefix}dadu${ya}
+│ ${ya}• ${prefix}patrick${ya}
+│ ${ya}• ${prefix}amongus${ya}
+│ ${ya}• ${prefix}gawrgura${ya}
+│ ${ya}• ${prefix}anjing${ya}
+│ ${ya}• ${prefix}emojimix${ya}
+│ ${ya}• ${prefix}emoji${ya}
+│ ${ya}• ${prefix}bucinstick${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'animemenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}WIBU MENU${ye} ]
+│ ${ya}• ${prefix}anime${ya}
+│ ${ya}• ${prefix}nhentai${ya}
+│ ${ya}• ${prefix}nekopoisearch${ya}
+│ ${ya}• ${prefix}nekopoi${ya}
+│ ${ya}• ${prefix}kusonime${ya}
+│ ${ya}• ${prefix}lk21${ya}
+│ ${ya}• ${prefix}character${ya}
+│ ${ya}• ${prefix}manga${ya}
+│ ${ya}• ${prefix}gimage${ya}
+│ ${ya}• ${prefix}pinterest${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'grupmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}GROUP MENU${ye} ]
+│ ${ya}• ${prefix}linkgroup${ya}
+│ ${ya}• ${prefix}antilink <on/off>${ya}
+│ ${ya}• ${prefix}autosticker <1/0>${ya}
+│ ${ya}• ${prefix}group <open/close>${ya}
+│ ${ya}• ${prefix}add 628××××${ya}
+│ ${ya}• ${prefix}kick @tag${ya}
+│ ${ya}• ${prefix}tagall <teks>${ya}
+│ ${ya}• ${prefix}hidetag <teks>${ya}
+│ ${ya}• ${prefix}promote @tag${ya}
+│ ${ya}• ${prefix}demote @tag${ya}
+│ ${ya}• ${prefix}setppgc <reply foto>${ya}
+│ ${ya}• ${prefix}setname <name>${ya}
+│ ${ya}• ${prefix}setdesc <teks>${ya}
+│ ${ya}• ${prefix}ephemeral [option]${ya}
+│ ${ya}• ${prefix}setppgc [image]${ya}
+│ ${ya}• ${prefix}setname [text]${ya}
+│ ${ya}• ${prefix}setdesc [text]${ya}
+│ ${ya}• ${prefix}editinfo [option]${ya}
+│ ${ya}• ${prefix}mute [on/off]${ya}
+│ ${ya}• ${prefix}vote [text]${ya}
+│ ${ya}• ${prefix}devote${ya}
+│ ${ya}• ${prefix}upvote${ya}
+│ ${ya}• ${prefix}cekvote${ya}
+│ ${ya}• ${prefix}hapusvote${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'gamemenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}GAME MENU${ye} ]
+│ ${ya}• ${prefix}goblokcek${ya} 
+│ ${ya}• ${prefix}jelekcek${ya} 
+│ ${ya}• ${prefix}gaycek${ya}
+│ ${ya}• ${prefix}lesbicek${ya}
+│ ${ya}• ${prefix}gantengcek${ya} 
+│ ${ya}• ${prefix}cantikcek${ya}
+│ ${ya}• ${prefix}begocek${ya} 
+│ ${ya}• ${prefix}suhucek${ya}
+│ ${ya}• ${prefix}pintercek${ya}
+│ ${ya}• ${prefix}jagocek${ya}
+│ ${ya}• ${prefix}nolepcek${ya}
+│ ${ya}• ${prefix}babicek${ya}
+│ ${ya}• ${prefix}bebancek${ya}
+│ ${ya}• ${prefix}baikcek${ya}
+│ ${ya}• ${prefix}jahatcek${ya}
+│ ${ya}• ${prefix}anjingcek${ya}
+│ ${ya}• ${prefix}haramcek${ya}
+│ ${ya}• ${prefix}pakboycek${ya}
+│ ${ya}• ${prefix}pakgirlcek${ya}
+│ ${ya}• ${prefix}sangecek${ya} 
+│ ${ya}• ${prefix}bapercek${ya}
+│ ${ya}• ${prefix}fakboycek${ya}
+│ ${ya}• ${prefix}alimcek${ya}
+│ ${ya}• ${prefix}suhucek${ya}
+│ ${ya}• ${prefix}fakgirlcek${ya}
+│ ${ya}• ${prefix}kerencek${ya}
+│ ${ya}• ${prefix}wibucek${ya}
+│ ${ya}• ${prefix}pasarkascek${ya}
+│ ${ya}• ${prefix}jadian${ya}
+│ ${ya}• ${prefix}apakah${ya}
+│ ${ya}• ${prefix}rate${ya}
+│ ${ya}• ${prefix}kapankah${ya}
+│ ${ya}• ${prefix}bisakah${ya}
+│ ${ya}• ${prefix}kuismath${ya}
+│ ${ya}• ${prefix}tebak lagu${ya}
+│ ${ya}• ${prefix}tebak gambar${ya}
+│ ${ya}• ${prefix}tebak kata${ya}
+│ ${ya}• ${prefix}tebak kalimat${ya}
+│ ${ya}• ${prefix}tebak lirik${ya}
+│ ${ya}• ${prefix}tebak lontong${ya}
+│ ${ya}• ${prefix}berburu${ya}
+│ ${ya}• ${prefix}mancing${ya}
+│ ${ya}• ${prefix}menambang${ya}
+│ ${ya}• ${prefix}mining${ya}
+│ ${ya}• ${prefix}heal${ya}
+│ ${ya}• ${prefix}profile${ya}
+│ ${ya}• ${prefix}inventory${ya}
+│ ${ya}• ${prefix}leaderboard${ya}
+│ ${ya}• ${prefix}buy${ya}
+│ ${ya}• ${prefix}sell${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'downloadmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}DOWNLOAD MENU${ye} ]
+│ ${ya}• ${prefix}ytsearch <query>${ya}
+│ ${ya}• ${prefix}play <query>${ya}
+│ ${ya}• ${prefix}ytmp4 <link>${ya}
+│ ${ya}• ${prefix}ytmp3 <link>${ya}
+│ ${ya}• ${prefix}tiktoknowm <link>${ya}
+│ ${ya}• ${prefix}tiktokaudio <link>${ya}
+│ ${ya}• ${prefix}mediafire <link>${ya}
+│ ${ya}• ${prefix}xnxxsearch <query>${ya}
+│ ${ya}• ${prefix}xnxxvideo <link>${ya}
+│ ${ya}• ${prefix}spotify <link>${ya}
+│ ${ya}• ${prefix}spotifysearch <query>${ya}
+│ ${ya}• ${prefix}jooxplay <query>${ya}
+│ ${ya}• ${prefix}jooxplay <query>${ya}
+│ ${ya}• ${prefix}instagram <query>${ya}
+│ ${ya}• ${prefix}twitter <query>${ya}
+│ ${ya}• ${prefix}twittermp3 <query>${ya}
+│ ${ya}• ${prefix}facebook <query>${ya}
+│ ${ya}• ${prefix}umma <query>${ya}
+│ ${ya}• ${prefix}getvideo <query>${ya}
+│ ${ya}• ${prefix}getmusic <query>${ya}
+│ ${ya}• ${prefix}soundcloud <query>${ya}
+│ ${ya}• ${prefix}wikimedia <query>${ya}
+│ ${ya}• ${prefix}ringtone <query>${ya}
+└───────
+
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'stalkmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}STALKING MENU${ye} ]
+│ ${ya}• ${prefix}stalk <query>${ya}
+│ ${ya}• ${prefix}tiktokstalk <nama tt>${ya}
+│ ${ya}• ${prefix}githubstalk <nama gh>${ya}
+│ ${ya}• ${prefix}igstalk <nama ig>${ya}
+│ ${ya}• ${prefix}ytstalk <nama yt>${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'regionmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}ISLAM MENU${ye} ]
+│ ${ya}• ${prefix}asmaulhusna${ya}
+│ ${ya}• ${prefix}iqra${ya}
+│ ${ya}• ${prefix}hadist${ya}
+│ ${ya}• ${prefix}juzamma${ya}
+│ ${ya}• ${prefix}listsurah${ya}
+│ ${ya}• ${prefix}alquran${ya}
+│ ${ya}• ${prefix}jadwalsholat${ya}
+│ ${ya}• ${prefix}kisahnabi${ya}
+│ ${ya}• ${prefix}tafsirsurah${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'databasemenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}DATABASE MENU${ye} ]
+│ ${ya}• ${prefix}setcmd${ya}
+│ ${ya}• ${prefix}listcmd${ya}
+│ ${ya}• ${prefix}delcmd${ya}
+│ ${ya}• ${prefix}lockcmd${ya}
+│ ${ya}• ${prefix}addmsg${ya}
+│ ${ya}• ${prefix}listmsg${ya}
+│ ${ya}• ${prefix}getmsg${ya}
+│ ${ya}• ${prefix}delmsg${ya}
+└───────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'anonymouschatmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}ANONYMOUS MENU${ye} ]
+│ ${ya}• ${prefix}anonymous${ya}
+│ ${ya}• ${prefix}start${ya}
+│ ${ya}• ${prefix}next${ya}
+│ ${ya}• ${prefix}keluar${ya}
+│ ${ya}• ${prefix}sendkontak${ya}
+└───────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'soundmenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}SOUND MENU${ye} ]
+│ ${ya}• ${prefix}sound1${ya}
+│ ${ya}• ${prefix}sound2${ya}
+│ ${ya}• ${prefix}sound3${ya}
+│ ${ya}• ${prefix}sound4${ya}
+│ ${ya}• ${prefix}sound5${ya}
+│ ${ya}• ${prefix}sound6${ya}
+│ ${ya}• ${prefix}sound7${ya}
+│ ${ya}• ${prefix}sound8${ya}
+│ ${ya}• ${prefix}sound9${ya}
+│ ${ya}• ${prefix}sound10${ya}
+│ ${ya}• ${prefix}sound11${ya}
+│ ${ya}• ${prefix}sound12${ya}
+│ ${ya}• ${prefix}sound13${ya}
+│ ${ya}• ${prefix}sound14${ya}
+│ ${ya}• ${prefix}sound15${ya}
+│ ${ya}• ${prefix}sound16${ya}
+│ ${ya}• ${prefix}sound17${ya}
+│ ${ya}• ${prefix}sound18${ya}
+│ ${ya}• ${prefix}sound19${ya}
+│ ${ya}• ${prefix}sound20${ya}
+│ ${ya}• ${prefix}sound21${ya}
+│ ${ya}• ${prefix}sound22${ya}
+│ ${ya}• ${prefix}sound23${ya}
+│ ${ya}• ${prefix}sound24${ya}
+│ ${ya}• ${prefix}sound25${ya}
+│ ${ya}• ${prefix}sound26${ya}
+│ ${ya}• ${prefix}sound27${ya}
+│ ${ya}• ${prefix}sound28${ya}
+│ ${ya}• ${prefix}sound29${ya}
+│ ${ya}• ${prefix}sound30${ya}
+│ ${ya}• ${prefix}sound31${ya}
+│ ${ya}• ${prefix}sound32${ya}
+│ ${ya}• ${prefix}sound33${ya}
+│ ${ya}• ${prefix}sound34${ya}
+│ ${ya}• ${prefix}sound35${ya}
+│ ${ya}• ${prefix}sound36${ya}
+│ ${ya}• ${prefix}sound37${ya}
+│ ${ya}• ${prefix}sound38${ya}
+│ ${ya}• ${prefix}sound39${ya}
+│ ${ya}• ${prefix}sound40${ya}
+│ ${ya}• ${prefix}sound41${ya}
+│ ${ya}• ${prefix}sound42${ya}
+│ ${ya}• ${prefix}sound43${ya}
+│ ${ya}• ${prefix}sound44${ya}
+│ ${ya}• ${prefix}sound45${ya}
+│ ${ya}• ${prefix}sound46${ya}
+│ ${ya}• ${prefix}sound47${ya}
+│ ${ya}• ${prefix}sound48${ya}
+│ ${ya}• ${prefix}sound49${ya}
+│ ${ya}• ${prefix}sound50${ya}
+│ ${ya}• ${prefix}sound51${ya}
+│ ${ya}• ${prefix}sound52${ya}
+│ ${ya}• ${prefix}sound53${ya}
+│ ${ya}• ${prefix}sound54${ya}
+│ ${ya}• ${prefix}sound55${ya}
+│ ${ya}• ${prefix}sound56${ya}
+│ ${ya}• ${prefix}sound57${ya}
+│ ${ya}• ${prefix}sound58${ya}
+│ ${ya}• ${prefix}sound59${ya}
+│ ${ya}• ${prefix}sound60${ya}
+│ ${ya}• ${prefix}sound61${ya}
+│ ${ya}• ${prefix}sound62${ya}
+│ ${ya}• ${prefix}sound63${ya}
+│ ${ya}• ${prefix}sound64${ya}
+│ ${ya}• ${prefix}sound65${ya}
+│ ${ya}• ${prefix}sound66${ya}
+│ ${ya}• ${prefix}sound67${ya}
+│ ${ya}• ${prefix}sound68${ya}
+│ ${ya}• ${prefix}sound69${ya}
+│ ${ya}• ${prefix}sound70${ya}
+│ ${ya}• ${prefix}sound71${ya}
+│ ${ya}• ${prefix}sound72${ya}
+│ ${ya}• ${prefix}sound73${ya}
+│ ${ya}• ${prefix}sound74${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'logomenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}LOGO AND TEXT MENU${ye} ]
+│ ${ya}• calkboard${ya}
+│ ${ya}• airline${ya}
+│ ${ya}• surfingboard${ya}
+│ ${ya}• watercolor${ya}
+│ ${ya}• neonwriting${ya}
+│ ${ya}• arrowsigns${ya}
+│ ${ya}• birthdaycake${ya}
+│ ${ya}• glassbauble${ya}
+│ ${ya}• footballplayer${ya}
+│ ${ya}• ${prefix}tololserti${ya}
+│ ${ya}• ${prefix}shadow${ya}
+│ ${ya}• ${prefix}cup${ya}
+│ ${ya}• ${prefix}cup1${ya}
+│ ${ya}• ${prefix}romance${ya}
+│ ${ya}• ${prefix}smoke${ya}
+│ ${ya}• ${prefix}burnpaper${ya}
+│ ${ya}• ${prefix}lovemessage${ya}
+│ ${ya}• ${prefix}undergrass${ya}
+│ ${ya}• ${prefix}love${ya}
+│ ${ya}• ${prefix}coffe${ya}
+│ ${ya}• ${prefix}woodheart${ya}
+│ ${ya}• ${prefix}woodenboard${ya}
+│ ${ya}• ${prefix}summer3d${ya}
+│ ${ya}• ${prefix}wolfmetal${ya}
+│ ${ya}• ${prefix}nature3d${ya}
+│ ${ya}• ${prefix}underwater${ya}
+│ ${ya}• ${prefix}golderrose${ya}
+│ ${ya}• ${prefix}summernature${ya}
+│ ${ya}• ${prefix}letterleaves${ya}
+│ ${ya}• ${prefix}glowingneon${ya}
+│ ${ya}• ${prefix}fallleaves${ya}
+│ ${ya}• ${prefix}flamming${ya}
+│ ${ya}• ${prefix}harrypotter${ya}
+│ ${ya}• ${prefix}carvedwood${ya}
+│ ${ya}• ${prefix}tiktokmaker${ya}
+│ ${ya}• ${prefix}ktpmaker${ya}
+│ ${ya}• ${prefix}arcade8bit${ya}
+│ ${ya}• ${prefix}battlefield4${ya}
+│ ${ya}• ${prefix}pubg${ya}
+│ ${ya}• ${prefix}pornhub${ya}
+│ ${ya}• ${prefix}glitch${ya}
+│ ${ya}• ${prefix}avenger${ya}
+│ ${ya}• ${prefix}space${ya}
+│ ${ya}• ${prefix}ninjalogo${ya}
+│ ${ya}• ${prefix}marvelstudio${ya}
+│ ${ya}• ${prefix}lionlogo${ya}
+│ ${ya}• ${prefix}wolflogo${ya}
+│ ${ya}• ${prefix}steel3d${ya}
+│ ${ya}• ${prefix}wallgravity${ya}
+│ ${ya}• ${prefix}coolgravity${ya}
+│ ${ya}• ${prefix}wetglass${ya}
+│ ${ya}• ${prefix}multicolor3d${ya}
+│ ${ya}• ${prefix}watercolor${ya}
+│ ${ya}• ${prefix}luxurygold${ya}
+│ ${ya}• ${prefix}galaxywallpaper${ya}
+│ ${ya}• ${prefix}lighttext${ya}
+│ ${ya}• ${prefix}beautifulflower${ya}
+│ ${ya}• ${prefix}puppycute${ya}
+│ ${ya}• ${prefix}royaltext${ya}
+│ ${ya}• ${prefix}heartshaped${ya}
+│ ${ya}• ${prefix}birthdaycake${ya}
+│ ${ya}• ${prefix}galaxystyle${ya}
+│ ${ya}• ${prefix}hologram3d${ya}
+│ ${ya}• ${prefix}greenneon${ya}
+│ ${ya}• ${prefix}glossychrome${ya}
+│ ${ya}• ${prefix}greenbush${ya}
+│ ${ya}• ${prefix}metallogo${ya}
+│ ${ya}• ${prefix}noeltext${ya}
+│ ${ya}• ${prefix}glittergold${ya}
+│ ${ya}• ${prefix}textcake${ya}
+│ ${ya}• ${prefix}starsnight${ya}
+│ ${ya}• ${prefix}wooden3d${ya}
+│ ${ya}• ${prefix}textbyname${ya}
+│ ${ya}• ${prefix}writegalacy${ya}
+│ ${ya}• ${prefix}galaxybat${ya}
+│ ${ya}• ${prefix}snow3d${ya}
+│ ${ya}• ${prefix}birthdayday${ya}
+│ ${ya}• ${prefix}goldplaybutton${ya}
+│ ${ya}• ${prefix}silverplaybutton${ya}
+│ ${ya}• ${prefix}freefire${ya}
+│ ${ya}• ${prefix}blackpink${ya}
+│ ${ya}• ${prefix}neon${ya}
+│ ${ya}• ${prefix}greenneon${ya}
+│ ${ya}• ${prefix}advanceglow${ya}
+│ ${ya}• ${prefix}futureneon${ya}
+│ ${ya}• ${prefix}sandwriting${ya}
+│ ${ya}• ${prefix}sandsummer${ya}
+│ ${ya}• ${prefix}sandengraved${ya}
+│ ${ya}• ${prefix}metaldark${ya}
+│ ${ya}• ${prefix}neonlight${ya}
+│ ${ya}• ${prefix}holographic${ya}
+│ ${ya}• ${prefix}text1917${ya}
+│ ${ya}• ${prefix}minion${ya}
+│ ${ya}• ${prefix}deluxesilver${ya}
+│ ${ya}• ${prefix}newyearcard${ya}
+│ ${ya}• ${prefix}bloodfrosted${ya}
+│ ${ya}• ${prefix}halloween${ya}
+│ ${ya}• ${prefix}jokerlogo${ya}
+│ ${ya}• ${prefix}fireworksparkle${ya}
+│ ${ya}• ${prefix}natureleaves${ya}
+│ ${ya}• ${prefix}bokeh${ya}
+│ ${ya}• ${prefix}toxic${ya}
+│ ${ya}• ${prefix}strawberry${ya}
+│ ${ya}• ${prefix}box3d${ya}
+│ ${ya}• ${prefix}roadwarning${ya}
+│ ${ya}• ${prefix}breakwall${ya}
+│ ${ya}• ${prefix}icecold${ya}
+│ ${ya}• ${prefix}luxury${ya}
+│ ${ya}• ${prefix}cloud${ya}
+│ ${ya}• ${prefix}summersand${ya}
+│ ${ya}• ${prefix}horrorblood${ya}
+│ ${ya}• ${prefix}thunder${ya}
+│ ${ya}• ${prefix}3dchristmas${ya}
+│ ${ya}• ${prefix}3ddeepsea${ya}
+│ ${ya}• ${prefix}americanflag${ya}
+│ ${ya}• ${prefix}3dscifi${ya}
+│ ${ya}• ${prefix}3drainbow${ya}
+│ ${ya}• ${prefix}3dwaterpipe${ya}
+│ ${ya}• ${prefix}halloweenskeleton${ya}
+│ ${ya}• ${prefix}sketch${ya}
+│ ${ya}• ${prefix}bluecircuit${ya}
+│ ${ya}• ${prefix}space${ya}
+│ ${ya}• ${prefix}metallic${ya}
+│ ${ya}• ${prefix}fiction${ya}
+│ ${ya}• ${prefix}greenhorror${ya}
+│ ${ya}• ${prefix}transformer${ya}
+│ ${ya}• ${prefix}berry${ya}
+│ ${ya}• ${prefix}thunder${ya}
+│ ${ya}• ${prefix}magma${ya}
+│ ${ya}• ${prefix}3dcrackedstone${ya}
+│ ${ya}• ${prefix}3dneonlight${ya}
+│ ${ya}• ${prefix}impressiveglitch${ya}
+│ ${ya}• ${prefix}naturalleaves${ya}
+│ ${ya}• ${prefix}fireworksparkle${ya}
+│ ${ya}• ${prefix}matrix${ya}
+│ ${ya}• ${prefix}dropwater${ya}
+│ ${ya}• ${prefix}harrypotter${ya}
+│ ${ya}• ${prefix}foggywindow${ya}
+│ ${ya}• ${prefix}neondevils${ya}
+│ ${ya}• ${prefix}christmasholiday${ya}
+│ ${ya}• ${prefix}3dgradient${ya}
+│ ${ya}• ${prefix}gluetext${ya}
+│ ${ya}• ${prefix}shadow${ya}
+│ ${ya}• ${prefix}romantic${ya}
+│ ${ya}• ${prefix}smoke${ya}
+│ ${ya}• ${prefix}burnpapper${ya}
+│ ${ya}• ${prefix}naruto${ya}
+│ ${ya}• ${prefix}lovemsg${ya}
+│ ${ya}• ${prefix}grassmsg${ya}
+│ ${ya}• ${prefix}lovetext${ya}
+│ ${ya}• ${prefix}coffecup${ya}
+│ ${ya}• ${prefix}butterfly${ya}
+│ ${ya}• ${prefix}harrypotter${ya}
+│ ${ya}• ${prefix}retrolol${ya}
+│ ${ya}• ${prefix}ffcover${ya}
+│ ${ya}• ${prefix}crossfire${ya}
+│ ${ya}• ${prefix}galaxy${ya}
+│ ${ya}• ${prefix}glass${ya}
+│ ${ya}• ${prefix}neon${ya}
+│ ${ya}• ${prefix}beach${ya}
+│ ${ya}• ${prefix}igcertificate${ya}
+│ ${ya}• ${prefix}ytcertificate${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'photomenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}RANDOM FOTO${ye} ]
+│ ${ya}• ${prefix}hentai${ya}
+│ ${ya}• ${prefix}ahegao${ya}
+│ ${ya}• ${prefix}ass${ya}
+│ ${ya}• ${prefix}bdsm${ya}
+│ ${ya}• ${prefix}cuckold${ya}
+│ ${ya}• ${prefix}cum${ya}
+│ ${ya}• ${prefix}ero${ya}
+│ ${ya}• ${prefix}femdom${ya}
+│ ${ya}• ${prefix}foot${ya}
+│ ${ya}• ${prefix}gangbang${ya}
+│ ${ya}• ${prefix}glasses${ya}
+│ ${ya}• ${prefix}jahy${ya}
+│ ${ya}• ${prefix}masturbation${ya}
+│ ${ya}• ${prefix}orgy${ya}
+│ ${ya}• ${prefix}panties${ya}
+│ ${ya}• ${prefix}pussy${ya}
+│ ${ya}• ${prefix}thighs${ya}
+│ ${ya}• ${prefix}yuri${ya}
+│ ${ya}• ${prefix}wallpaper${ya}
+│ ${ya}• ${prefix}wallpapermeme${ya}
+│ ${ya}• ${prefix}wallpaperprogamer${ya}
+│ ${ya}• ${prefix}wallpapergamer${ya}
+│ ${ya}• ${prefix}wallpaperanime${ya}
+│ ${ya}• ${prefix}wallpaperteknologi${ya}
+│ ${ya}• ${prefix}wallpapercyber${ya}
+│ ${ya}• ${prefix}wallpaperinori${ya}
+│ ${ya}• ${prefix}wallpaperislami${ya}
+│ ${ya}• ${prefix}darkjokes${ya}
+│ ${ya}• ${prefix}meme${ya}
+│ ${ya}• ${prefix}hsdxd${ya}
+│ ${ya}• ${prefix}sao${ya}
+│ ${ya}• ${prefix}lovelive${ya}
+│ ${ya}• ${prefix}pinterest${ya}
+│ ${ya}• ${prefix}ppcouple${ya}
+│ ${ya}• ${prefix}hijaber${ya}
+│ ${ya}• ${prefix}cecan${ya}
+│ ${ya}• ${prefix}cecan2${ya}
+│ ${ya}• ${prefix}cogan${ya}
+│ ${ya}• ${prefix}waifu${ya}
+│ ${ya}• ${prefix}loli${ya}
+│ ${ya}• ${prefix}husbu${ya}
+│ ${ya}• ${prefix}milf${ya}
+│ ${ya}• ${prefix}cosplay${ya}
+│ ${ya}• ${prefix}wallml${ya}
+│ ${ya}• ${prefix}art${ya}
+│ ${ya}• ${prefix}bts${ya}
+│ ${ya}• ${prefix}exo${ya}
+│ ${ya}• ${prefix}elf${ya}
+│ ${ya}• ${prefix}neko${ya}
+│ ${ya}• ${prefix}shota${ya}
+│ ${ya}• ${prefix}sagiri${ya}
+│ ${ya}• ${prefix}shinobu${ya}
+│ ${ya}• ${prefix}megumin${ya}
+│ ${ya}• ${prefix}wallnime${ya}
+│ ${ya}• ${prefix}chiisaihentai${ya}
+│ ${ya}• ${prefix}trap${ya}
+│ ${ya}• ${prefix}blowjob${ya}
+│ ${ya}• ${prefix}yaoi${ya}
+│ ${ya}• ${prefix}ecchi${ya}
+│ ${ya}• ${prefix}ahegao${ya}
+│ ${ya}• ${prefix}hololewd${ya}
+│ ${ya}• ${prefix}sideoppai${ya}
+│ ${ya}• ${prefix}animefeets${ya}
+│ ${ya}• ${prefix}animebooty${ya}
+│ ${ya}• ${prefix}animethighss${ya}
+│ ${ya}• ${prefix}hentaiparadise${ya}
+│ ${ya}• ${prefix}animearmpits${ya}
+│ ${ya}• ${prefix}hentaifemdom${ya}
+│ ${ya}• ${prefix}lewdanimegirls${ya}
+│ ${ya}• ${prefix}biganimetiddies${ya}
+│ ${ya}• ${prefix}animebellybutton${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'videomenu':
+
+await Dha.send5ButImg(from, `┌──[ ${ye}RANDOM VIDEO${ye} ]
+│ ${ya}• ${prefix}storyanime${ya}
+│ ${ya}• ${prefix}asupan${ya}
+│ ${ya}• ${prefix}asupan2${ya}
+│ ${ya}• ${prefix}asupan3${ya}
+│ ${ya}• ${prefix}bokep${ya}
+│ ${ya}• ${prefix}bocil${ya}
+│ ${ya}• ${prefix}santuy${ya}
+│ ${ya}• ${prefix}ukhty${ya}
+└──────
+Note: 
+Masih Tahap Pengembangan Jika Ada Eror/Bug Segera Lapor
+Thanks~`, `DhaBotz Beta Multi Device Versi 1.2.3`,thumb, [{"urlButton": {"displayText": "Website","url": `${myweb}`}}] )
+break
+case 'command':{
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `DHA BOTZ MULTI DEVICE`,
+                    description: `VERSION 1.2.3`,
+                    buttonText: "SELECT MENU",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "Bot Features",
+								"rows": [
+									{
+										"title": "All Menu",
+										"rowId": `${prefix}allmenu`
+									},
+									{
+										"title": "Information Menu",
+										"rowId": `${prefix}infomenu`
+									},
+									{
+											"title": "Logo Dan Text Maker Menu",
+										"rowId": `${prefix}logomenu`
+										},
+									{
+										"title": "Primbon Menu",
+							            "rowId": `${prefix}primbonmenu`
+									},
+										{
+											"title": "Image Menu",
+										 // //"description": "displays the list Of Image Features",
+										"rowId": `${prefix}photomenu`
+										},
+										{
+											"title": "Teks Menu",
+										 // //"description": "displays the list Of Teks Features",
+										"rowId": `${prefix}teksmenu`
+										},
+										{
+											"title": "Grup Menu",
+										 // //"description": "displays the list Of Grup Features",
+										"rowId": `${prefix}grupmenu`
+										},
+										{
+											"title": "Sticker Menu",
+										 // //"description": "displays the list Of Sticker Features",
+										"rowId": `${prefix}stickermenu`
+										},
+										{
+											"title": "Anime Menu",
+										 // //"description": "displays the list Of Anime Features",
+										"rowId": `${prefix}animemenu`
+										},
+										{
+											"title": "Games Menu",
+										 // //"description": "displays the list Of Games Features",
+										"rowId": `${prefix}gamemenu`
+										},
+										{
+											"title": "Convert Menu",
+										 //"description": "displays the list Of Convert Features",
+										"rowId": `${prefix}convertmenu`
+										},
+										{
+										"title": "Other Menu",
+										 //"description": "displays the list Of Other Features",
+										"rowId": `${prefix}othermenu`
+										},
+										{
+											"title": "Region Menu",
+										 //"description": "displays the list Of Region Features",
+										"rowId": `${prefix}regionmenu`
+										},
+										{
+											"title": "Sound Menu",
+										 //"description": "displays the list Of Sound Features",
+										"rowId": `${prefix}soundmenu`
+										},
+										{
+											"title": "Database Menu",
+										 //"description": "displays the list Of Database Features",
+										"rowId": `${prefix}databasemenu`
+										},
+										{
+											"title": "Stalking Menu",
+										 //"description": "displays the list Of Stalk Features",
+										"rowId": `${prefix}stalkmenu`
+										},
+										{
+											"title": "Download Menu",
+										 //"description": "displays the list Of Download Features",
+										"rowId": `${prefix}downloadmenu`
+										},
+										{
+											"title": "Video Menu",
+										 //"description": "displays the list Of Video Features",
+										"rowId": `${prefix}videomenu`
+										},
+								]
+							},
+							{
+								"title": "Chat with fellow users",
+								"rows": [
+									{
+										"title": "Anonymous Chat Menu",
+										 //"description": "displays the list Of Anonymous Chat Features",
+										"rowId": `${prefix}anonymouschatmenu`
+									}
+								]
+							},
+							{
+								"title": "Owner",
+								"rows": [
+									{
+										"title": "Owner Menu",
+										 //"description": "displays the list Of Owner Features",
+										"rowId": `${prefix}ownermenu`
+									}
+								]
+							}
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'storemenu':{
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `MAU BELANJA APA KAK`,
+                    description: `PILIH DISINI`,
+                    buttonText: "SELECT STORE",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "Bot Features",
+								"rows": [
+									{
+										"title": "DIAOMOND FREE FIRE",
+										 //"description": "displays the list Of Diamond Free Fire",
+										"rowId": `${prefix}idff`
+									},
+									{
+										"title": "DIAMOND MOBILE LEGENDS",
+										 //"description": "displays the list Of Diamond Mobile Legends",
+										"rowId": `${prefix}idml`
+									},
+									{
+											"title": "UC PUBG",
+										 //"description": "displays the list Of UC PUBG",
+										"rowId": `${prefix}idpubg`
+										},
+									{
+										"title": "PULSA ALL OPERATOR",
+										 //"description": "displays the list Of Pulsa All Operator",
+										"rowId": `${prefix}pulsa`
+									},
+									{
+										"title": "PAKET NELPON",
+										 //"description": "displays the list Of Pulsa All Operator",
+										"rowId": `${prefix}kartu`
+									},
+										{
+											"title": "TOKEN LISTRIK",
+										"rowId": `${prefix}idpln`
+										}		
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+
+case 'idff':{
+if (args.length == 0) return  replyNya(`Ketik IDFF IDMU\nCONTOH IDFF 1345834683`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST DIAMOND FREE FIRE`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT DIAMOND",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "Bot Features",
+								"rows": [
+									{
+										"title": "70💎",
+										"rowId": `${prefix}topupff ${txt1} 70dm 10.000`
+									},
+										{
+										"title": "100💎",
+										"rowId": `${prefix}topupff ${txt1} 100dm 15.000`
+									},
+										{
+										"title": "120💎",
+										"rowId": `${prefix}topupff ${txt1} 120dm 18.000`
+									},
+									
+									{
+										"title": "140💎",
+										"rowId": `${prefix}topupff ${txt1} 140dm 20.000`
+									},
+										{
+										"title": "180💎",
+										"rowId": `${prefix}topupff ${txt1} 180dm 25.000`
+									},
+									
+									{
+									"title": "210💎",
+									"rowId": `${prefix}topupff ${txt1} 210dm 30.000`
+										},
+								{
+									"title": "280💎",
+									"rowId": `${prefix}topupff ${txt1} 280dm 40.000`
+										},
+									{
+									"title": "210💎",
+									"rowId": `${prefix}topupff ${txt1} 300dm 42.000`
+										},
+										{
+									"title": "355💎",
+									"rowId": `${prefix}topupff ${txt1} 355dm 48.000`
+										},
+											{
+										"title": "425💎",
+										"rowId": `${prefix}topupff ${txt1} 425dm 60.000`
+									},
+										{
+									"title": "720💎",
+									"rowId": `${prefix}topupff ${txt1} 720dm 100.000`
+										},
+										{
+									"title": "Member Mingguan",
+									"rowId": `${prefix}topupff ${txt1} M.Mingguan 30.000`
+										},
+										{
+									"title": "Member Bulanan",
+									"rowId": `${prefix}topupff ${txt1} M.Bulanan 138.000`
+										},
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'idml':{
+if (args.length == 0) return  replyNya(`KETIK IDML ID/IDSERVERMU\nCONTOH IDML 84830127/2169`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST DIAMOND MOBILE LEGENDS`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT DIAMOND",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "Bot Features",
+								"rows": [
+										{
+										"title": "59💎",
+										"rowId": `${prefix}topupml ${txt1} 59dm 18.000`
+									},
+									
+									{
+									"title": "86💎",
+									"rowId": `${prefix}topupml ${txt1} 86dm 23.000`
+										},
+									{
+									"title": "172💎",
+									"rowId": `${prefix}topupml ${txt1} 172dm 43.000`
+										},
+										{
+									"title": "257💎",
+									"rowId": `${prefix}topupml ${txt1} 257dm 63.000`
+										},
+											{
+										"title": "344💎",
+										"rowId": `${prefix}topupml ${txt1} 344dm 84.000`
+									},
+										{
+									"title": "429💎",
+									"rowId": `${prefix}topupml ${txt1} 429dm 104.000`
+										},
+										{
+									"title": "Starlight Member",
+									"rowId": `${prefix}topupml ${txt1} S.Member 130.000`
+										},
+										{
+									"title": "Twilight Pass",
+									"rowId": `${prefix}topupml ${txt1} T.Pass 130.000`
+										},
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'idpubg':{
+if (args.length == 0) return  replyNya(`KETIK IDPUBG IDMU\n CONTOH IDPUBG 5119961143`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST DIAMOND MOBILE LEGENDS`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT UC",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "Bot Features",
+								"rows": [
+										{
+										"title": "59💵",
+										"rowId": `${prefix}topuppubg ${txt1} 59uc 10.000`
+									},
+									
+									{
+									"title": "70💵",
+									"rowId": `${prefix}topuppubg ${txt1} 70uc 15.000`
+										},
+								{
+									"title": "100💵",
+									"rowId": `${prefix}topuppubg ${txt1} 100uc 20.000`
+										},
+									{
+									"title": "150💵",
+									"rowId": `${prefix}topuppubg ${txt1} 150uc 33.000`
+										},
+										{
+									"title": "210💵",
+									"rowId": `${prefix}topuppubg ${txt1} 210uc 43.000`
+										},
+											{
+										"title": "250💵",
+										"rowId": `${prefix}topuppubg ${txt1} 250uc 84.000`
+									},
+										{
+									"title": "500💵",
+									"rowId": `${prefix}topuppubg ${txt1} 500uc 93.000`
+										},
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'idpln':{
+if (args.length == 0) return  replyNya(`KETIK IDPLN IDPLNMU\nCONTOH IDPLN 181801003458`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST TOKEN LISTRIK`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT LISTRIK",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH TEGANGAN",
+								"rows": [
+									{
+										"title": "TOKEN 20.000",
+										"rowId": `${prefix}topuplistrik ${txt1} 20.000 22.000`
+									},
+										{
+										"title": "TOKEN 50.000",
+										"rowId": `${prefix}topuplistrik ${txt1} 50.000 52.000`
+									},
+										{
+										"title": "TOKEN 100.000",
+										"rowId": `${prefix}topuplistrik ${txt1} 100.000 102.000`
+									},
+									
+									{
+										"title": "TOKEN 200.000",
+										"rowId": `${prefix}topuplistrik ${txt1} 200.000 202.000`
+									},
+										{
+										"title": "TOKEN 500.000",
+										"rowId": `${prefix}topuplistrik ${txt1} 500.000 502.000`
+									},																	
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'kartu':{
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `••••••••••••••••`,
+                    description: `PILIH DISINI`,
+                    buttonText: "SELECT KARTU",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "ALL KARTU",
+								"rows": [
+									{
+										"title": "XL",
+										 //"description": "displays the list Of Diamond Free Fire",
+										"rowId": `${prefix}xl`
+									},
+									{
+										"title": "TELKOMSEL",
+										 //"description": "displays the list Of Diamond Mobile Legends",
+										"rowId": `${prefix}telkomsel`
+									},
+									{
+											"title": "TRI",
+										 //"description": "displays the list Of UC PUBG",
+										"rowId": `${prefix}tri`
+										},
+									{
+										"title": "INDOSAT",
+										 //"description": "displays the list Of Pulsa All Operator",
+										"rowId": `${prefix}indosat`
+									},
+									{
+										"title": "AXIS",
+										 //"description": "displays the list Of Pulsa All Operator",
+										"rowId": `${prefix}axis`
+									}	
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'xl':{
+if (args.length == 0) return  replyNya(`KETIK XL NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON XL`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+									{
+										"title": "350Mnt + 50Mnt All Opt",
+										"rowId": `${prefix}topupnelpon ${txt1} 350Mnt+50MntAllOpt 7hari 12.000`
+									},
+										{
+										"title": "200Mnt",
+										"rowId": `${prefix}topupnelpon ${txt1} 200Mnt 14hari 16.000`
+									},
+										{
+										"title": "200Mnt + 400 SMS",
+										"rowId": `${prefix}topupnelpon ${txt1} 200Mnt+400SMS 30hari 36.000`
+									},
+										{
+										"title": "500Mnt",
+										"rowId": `${prefix}topupnelpon ${txt1} 500Mnt 30hari 36.000`
+									},																				
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'telkomsel':{
+if (args.length == 0) return  replyNya(`KETIK TELKOMSEL NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON TELKOMSEL`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+									{
+										"title": "PAKET NELPON 10RB",
+										"rowId": `${prefix}topupnelpon ${txt1} 10Rb 3hari 12.000`
+									},
+										{
+										"title": "PAKET NELPON 20RB",
+										"rowId": `${prefix}topupnelpon ${txt1} 20Rb 7hari 22.000`
+									},
+										{
+										"title": "PAKET NELPON 25RB",
+										"rowId": `${prefix}topupnelpon ${txt1} 25Rb 7hari 27.000`
+									},
+										{
+										"title": "PAKET NELPON 50RB",
+										"rowId": `${prefix}topupnelpon ${txt1} 50Rb 30hari 55.000`
+									},
+										{
+										"title": "PAKET NELPON 100RB",
+										"rowId": `${prefix}topupnelpon ${txt1} 100Rb 30hari 102.000`
+									},																																
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'axis':{
+if (args.length == 0) return  replyNya(`KETIK AXIS NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON AXIS`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+									{
+										"title": "PAKET NELPON 30MNT ALL",
+										"rowId": `${prefix}topupnelpon ${txt1} 30Mnt 7hari 10.000`
+									},
+										{
+										"title": "PAKET NELPON 100MNT ALL",
+										"rowId": `${prefix}topupnelpon ${txt1} 100Mnt 30hari 25.000`
+									},																																								
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'axis':{
+if (args.length == 0) return  replyNya(`KETIK AXIS NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON AXIS`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+									{
+										"title": "PAKET NELPON 60MNT ALL",
+										"rowId": `${prefix}topupnelpon ${txt1} 60Mnt 30hari 17.000`
+									},
+										{
+										"title": "PAKET NELPON 150MNT ALL",
+										"rowId": `${prefix}topupnelpon ${txt1} 150Mnt 30hari 31.000`
+									},																																								
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'indosat':{
+if (args.length == 0) return  replyNya(`KETIK INDOSAT NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON INDOSAT`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+									{
+										"title": "PAKET NELPON ULIMITED",
+										"rowId": `${prefix}topupnelpon ${txt1} Takterbatas 30hari 12.000`
+									},
+										{
+										"title": "PAKET NELPON 30MNT ALL OPT + UNLIMITED",
+										"rowId": `${prefix}topupnelpon ${txt1} 30mnt+takterbatas 7hari 18.000`
+									},
+										{
+										"title": "PAKET NELPON 60MNT ALL OPT + UNLIMITED",
+										"rowId": `${prefix}topupnelpon ${txt1} 60mnt+takterbatas 7hari 27.000`
+									},
+										{
+										"title": "PAKET NELPON 60MNT ALL OPT + UNLIMITED",
+										"rowId": `${prefix}topupnelpon ${txt1} 250mnt+takterbatas 30hari 52.000`
+									},																															
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'tri':{
+if (args.length == 0) return  replyNya(`KETIK TRI NOMORMU`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PAKET NELPON TRI`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PAKET NELPON",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PAKET",
+								"rows": [
+										{
+										"title": "PAKET NELPON 20MNT ALL OPT",
+										"rowId": `${prefix}topupnelpon ${txt1} 20mnt 7hari 8.000`
+									},
+										{
+										"title": "PAKET NELPON 60MNT ALL OPT",
+										"rowId": `${prefix}topupnelpon ${txt1} 60mnt 30hari 17.000`
+									},
+										{
+										"title": "PAKET NELPON 150MNT ALL OPT",
+										"rowId": `${prefix}topupnelpon ${txt1} 150mnt 30hari 32.000`
+									},																															
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'pulsa':{
+if (args.length == 0) return  replyNya(`KETIK PULSA NOMORMU\nCONTOH PULSA 082287486762`)
+txt1 = args[0]
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `LIST PULSA ALL OPERATOR`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT PULSA",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH PULSA",
+								"rows": [
+									{
+										"title": "PULSA 5.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 5.000 7.000`
+									},
+										{
+										"title": "PULSA 10.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 10.000 12.000`
+									},
+										{
+										"title": "PULSA 15.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 15.000 17.000`
+									},
+									
+									{
+										"title": "PULSA 20.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 20.000 22.000`
+									},
+										{
+										"title": "PULSA 25.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 25.000 27.000`
+									},						
+									{
+										"title": "PULSA 30.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 30.000 32.000`
+									},
+									{
+										"title": "PULSA 35.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 35.000 37.000`
+									},							
+									{
+										"title": "PULSA 40.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 40.000 42.000`
+									},								
+									{
+										"title": "PULSA 45.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 45.000 47.000`
+									},								
+									{
+										"title": "PULSA 50.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 50.000 52.000`
+									},			
+									{
+										"title": "PULSA 55.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 55.000 57.000`
+									},			
+									{
+										"title": "PULSA 60.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 60.000 62.000`
+									},			
+									{
+										"title": "PULSA 65.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 65.000 67.000`
+									},			
+									{
+										"title": "PULSA 70.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 70.000 72.000`
+									},			
+									{
+										"title": "PULSA 75.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 75.000 77.000`
+									},			
+									{
+										"title": "PULSA 80.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 80.000 82.000`
+									},			
+									{
+										"title": "PULSA 85.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 85.000 87.000`
+									},			
+									{
+										"title": "PULSA 90.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 90.000 92.000`
+									},			
+									{
+										"title": "PULSA 95.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 95.000 97.000`
+									},			
+									{
+										"title": "PULSA 100.000",
+										"rowId": `${prefix}topuppulsa ${txt1} 100.000 102.000`
+									},			
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case 'done':
+replyTemplate('TERIMAKASIH SILAHKAN BERI PENILAIAN')
+break
+case 'wtk':
+replyNya('SABAR YA BOTNYA SEDANG MEMERIKSA JIKA SUDAH MASUK KATAKAN DONE')
+break
+case 'wts':{
+let template = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                listMessage :{
+                    title: `PENILAIN MENURUTMU`,
+                    description: `____ ______ ____ ___`,
+                    buttonText: "SELECT NILAI",
+                    footerText: "*By YUDHA PERDANA*",
+                    listType: "SINGLE_SELECT",
+                    sections: [{
+								"title": "PILIH BINTANG",
+								"rows": [
+									{
+										"title": "⭐",
+										"rowId": `b`
+									},
+										{
+										"title": "⭐⭐",
+										"rowId": `bb`
+									},
+										{
+										"title": "⭐⭐⭐",
+										"rowId": `bbb`
+									},
+									
+									{
+										"title": "⭐⭐⭐⭐",
+										"rowId": `bbbb`
+									},
+										{
+										"title": "⭐⭐⭐⭐⭐",
+										"rowId": `bbbbb`
+									},																	
+						]				
+							}											
+						],
+          listType: 1
+                }
+            }), {})
+            Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
+            }
+            break
+case'b':
+replyOwnerr('TERIMAKASIH ATAS PENILAIAN DENGAN 1 BINTANG\nJIKA ADA MASUKAN YANG INGIN DISAMPAIKAN KETIK ULASAN')
+break
+ case'bb':
+ replyOwnerr('TERIMAKASIH ATAS PENILAIAN DENGAN 2 BINTANG\nJIKA ADA MASUKAN YANG INGIN DISAMPAIKAN KETIK ULASAN')
+ break
+  case'bbb':
+  replyOwnerr('TERIMAKASIH ATAS PENILAIAN DENGAN 3 BINTANG\nJIKA ADA MASUKAN YANG INGIN DISAMPAIKAN KETIK ULASAN')
+  break
+   case'bbbb':
+   replyOwnerr('TERIMAKASIH ATAS PENILAIAN DENGAN 4 BINTANG\nJIKA ADA MASUKAN YANG INGIN DISAMPAIKAN KETIK ULASAN')
+   break
+    case'bbbbb':
+    replyOwnerr('TERIMAKASIH ATAS PENILAIAN DENGAN 5 BINTANG\nJIKA ADA MASUKAN YANG INGIN DISAMPAIKAN KETIK ULASAN')
+break
+
             default:
                 if (budy.startsWith('=>')) {
                     if (!isCreator) return replyNya(mess.owner)
