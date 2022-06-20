@@ -559,6 +559,17 @@ async function replyOwnerr(teks) {
                                                }
                        return Dha.sendMessage(from, buttonMessage)
                 }
+async function replyNye(teks) {
+                       const buttonsDefault = []                 
+                       const buttonMessage = { 
+                                    text: teks, 
+                                    footer: "© BOT WHATSAPP 2022", 
+                                    templateButtons: buttonsDefault, 
+                                    image: {url: thumb}                                   
+                                               }
+                       return Dha.sendMessage(from, buttonMessage)
+                }
+                
 
 async function replyNya(teks) {
                        const buttonsDefault = [
@@ -1883,7 +1894,6 @@ Dha.sendMessage(m.chat, { sticker: veireuue }, { quoted: m })
 break
             case 'sticker': case 's': case 'stickergif': case 'sgif': {
             if (!quoted) throw `Balas Video/Image Dengan Caption ${prefix + command}`
-            replyNya(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await Dha.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
@@ -2886,9 +2896,16 @@ let random = eek[Math.floor(Math.random() * eek.length)]
 Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
 }
 break
-case 'wallpaper':{
+case 'wallpapermountain':{
 replyNya(mess.wait)
 let eek = await fetchJson(`https://raw.githubusercontent.com/Aprilia3/RestApi/master/data/Mountain.json`)
+let random = eek[Math.floor(Math.random() * eek.length)]
+Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
+}
+break
+case 'hijaber':{
+replyNya(mess.wait)
+let eek = await fetchJson(`httpshttps://raw.githubusercontent.com/binjaicity/warga62/master/hijaber.json`)
 let random = eek[Math.floor(Math.random() * eek.length)]
 Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
 }
@@ -4330,11 +4347,11 @@ break
 case 'delprem':
 if (!m.isGroup) return replyNya(mess.group)
 if (!m.key.fromMe && !isCreator) return replyNya(mess.owner)
-ya = `${args[0].replace('@', '')}@s.whatsapp.net`
-unp = prem.indexOf(ya)
+yarz = `${args[0].replace('@', '')}@s.whatsapp.net`
+unp = prem.indexOf(yarz)
 prem.splice(unp, 1)
 fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
-replyNya(`Nomor ${ya} Telah Di Hapus Premium!`)
+replyNya(`Nomor ${yarz} Telah Di Hapus Premium!`)
 break
 case 'donate': 
 case 'buypremium':
@@ -4367,7 +4384,7 @@ url: 'https://wa.me/6282287486762'
 Dha.relayMessage(m.chat, template.message, { messageId: template.key.id })
 }
 break
-case'%':{
+case'sxs':{
  txt1 = args[0]
   txt2 = args[1]
   txt3 = args[2]

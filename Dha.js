@@ -1243,6 +1243,8 @@ case 'rate':
 Dha.sendMessage(from, { text: `Rate : ${q}\nJawaban : *${te}%*` }, { quoted: m })
 
 					break
+case'pakboycek':
+case'pakgirlcek':
 case 'gantengcek':
   case 'cekganteng':
    
@@ -1894,7 +1896,6 @@ Dha.sendMessage(m.chat, { sticker: veireuue }, { quoted: m })
 break
             case 'sticker': case 's': case 'stickergif': case 'sgif': {
             if (!quoted) throw `Balas Video/Image Dengan Caption ${prefix + command}`
-            replyNya(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await Dha.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
@@ -2897,9 +2898,16 @@ let random = eek[Math.floor(Math.random() * eek.length)]
 Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
 }
 break
-case 'wallpaper':{
+case 'wallpapermountain':{
 replyNya(mess.wait)
 let eek = await fetchJson(`https://raw.githubusercontent.com/Aprilia3/RestApi/master/data/Mountain.json`)
+let random = eek[Math.floor(Math.random() * eek.length)]
+Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
+}
+break
+case 'hijaber':{
+replyNya(mess.wait)
+let eek = await fetchJson(`httpshttps://raw.githubusercontent.com/binjaicity/warga62/master/hijaber.json`)
 let random = eek[Math.floor(Math.random() * eek.length)]
 Dha.sendMessage(m.chat, { image: { url: random }, caption: `Nih Kak` }, { quoted: m })
 }

@@ -136,7 +136,18 @@ async function startDha() {
                     templateMessage: {
                         hydratedTemplate: {
                             imageMessage: message.imageMessage,
-                            hydratedContentText: ``,
+                            hydratedContentText: `Welcome ${num.split("@")[0]}, 😄
+
+*_JANGAN LUPA INTRO_*
+️Nama :
+Umur :
+Hobby :
+Gender :
+Asal Kota :
+
+Descripsi Grup: ${metadata.desc}
+
+Semoga Betah Kak ><`,
                             hydratedFooterText: 'MASUK DALAM GRUP',
                             hydratedButtons: []
                         }
@@ -149,7 +160,7 @@ async function startDha() {
                     templateMessage: {
                         hydratedTemplate: {
                             imageMessage: message.imageMessage,
-                            hydratedContentText: ``,
+                            hydratedContentText: `${num.split("@")[0]}, Yah Beban Nya Keluar 😓`,
                             hydratedFooterText: 'KELUAR DARI GRUP',
                             hydratedButtons: []
                         }
