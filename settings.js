@@ -65,6 +65,7 @@ global.mess = {
    potionawal: 1
 }
 global.thumb = fs.readFileSync('./image/chika.jpg')
+global.yud = fs.readFileSync('./image/yudha.jpg')
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
 	fs.unwatchFile(file)
